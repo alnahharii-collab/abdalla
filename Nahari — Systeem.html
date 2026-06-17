@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+<!-- saved from url=(0055)file:///Users/alnahari/Downloads/notion-template_1.html -->
+<html lang="nl"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nahari — Systeem</title>
+<link href="./Nahari — Systeem_files/css2" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0f0f10;
+    --surface: #18181b;
+    --surface2: #1e1e22;
+    --border: #2a2a2f;
+    --accent: #7c6aff;
+    --accent2: #3ecfb2;
+    --accent3: #f5a623;
+    --text: #e8e8ed;
+    --muted: #6b6b78;
+    --danger: #ff5f5f;
+    --success: #3ecfb2;
+    --green: #4ade80;
+    --gold: #fbbf24;
+    --blue: #60a5fa;
+    --pink: #f472b6;
+  }
+
+  body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; }
+
+  /* SIDEBAR */
+  .sidebar {
+    width: 220px; min-height: 100vh; background: var(--surface);
+    border-right: 1px solid var(--border); display: flex; flex-direction: column;
+    padding: 20px 12px; gap: 2px; position: fixed; top: 0; left: 0; bottom: 0; overflow-y: auto;
+  }
+
+  .sidebar-logo {
+    font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 700;
+    color: var(--text); padding: 8px 12px 20px; letter-spacing: -0.5px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .sidebar-logo span {
+    width: 24px; height: 24px; background: var(--accent); border-radius: 6px;
+    display: flex; align-items: center; justify-content: center; font-size: 12px;
+  }
+
+  .nav-section {
+    font-size: 10px; font-weight: 600; letter-spacing: 0.08em; color: var(--muted);
+    padding: 12px 12px 4px; text-transform: uppercase;
+  }
+
+  .nav-item {
+    display: flex; align-items: center; gap: 8px; padding: 7px 12px;
+    border-radius: 6px; font-size: 13px; color: var(--muted); cursor: pointer; transition: all 0.15s;
+  }
+  .nav-item:hover { background: var(--surface2); color: var(--text); }
+  .nav-item.active { background: rgba(124, 106, 255, 0.12); color: var(--accent); }
+  .nav-item .icon { font-size: 14px; width: 18px; text-align: center; }
+
+  /* MAIN */
+  .main { margin-left: 220px; flex: 1; padding: 40px 48px; }
+
+  /* PAGES */
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* HEADER */
+  .page-header { margin-bottom: 28px; }
+  .page-date { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; }
+  .page-title { font-family: 'Space Grotesk', sans-serif; font-size: 28px; font-weight: 700; letter-spacing: -1px; line-height: 1.1; }
+  .page-title .highlight { background: linear-gradient(135deg, var(--accent), var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+
+  /* STATS ROW */
+  .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 24px; }
+  .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px; }
+  .stat-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; }
+  .stat-value { font-family: 'Space Grotesk', sans-serif; font-size: 24px; font-weight: 700; line-height: 1; }
+  .stat-sub { font-size: 11px; color: var(--muted); margin-top: 4px; }
+  .dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; margin-right: 4px; }
+
+  /* GRID */
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+  .grid-wide { grid-template-columns: 2fr 1fr; }
+  .grid-3 { grid-template-columns: 1fr 1fr 1fr; }
+  .grid-full { grid-template-columns: 1fr; }
+
+  /* CARD */
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; }
+  .card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+  .card-title { font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 600; display: flex; align-items: center; gap: 6px; }
+  .card-action { font-size: 11px; color: var(--accent); cursor: pointer; border: none; background: none; font-family: inherit; padding: 4px 8px; border-radius: 4px; transition: background 0.15s; }
+  .card-action:hover { background: rgba(124,106,255,0.1); }
+
+  /* TAKEN */
+  .task-item { display: flex; align-items: center; gap: 10px; padding: 9px 0; border-bottom: 1px solid var(--border); font-size: 13px; cursor: pointer; }
+  .task-item:last-child { border-bottom: none; }
+  .task-check { width: 16px; height: 16px; border: 1.5px solid var(--border); border-radius: 4px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.15s; }
+  .task-check.done { background: var(--accent); border-color: var(--accent); color: white; font-size: 10px; }
+  .task-text { flex: 1; line-height: 1.3; }
+  .task-text.done { text-decoration: line-through; color: var(--muted); }
+  .task-tag { font-size: 10px; padding: 2px 7px; border-radius: 4px; font-weight: 500; }
+  .tag-purple { background: rgba(124,106,255,0.15); color: var(--accent); }
+  .tag-teal { background: rgba(62,207,178,0.12); color: var(--accent2); }
+  .tag-orange { background: rgba(245,166,35,0.12); color: var(--accent3); }
+  .tag-red { background: rgba(255,95,95,0.12); color: var(--danger); }
+  .tag-green { background: rgba(74,222,128,0.12); color: var(--green); }
+  .tag-gold { background: rgba(251,191,36,0.12); color: var(--gold); }
+  .tag-blue { background: rgba(96,165,250,0.12); color: var(--blue); }
+  .tag-pink { background: rgba(244,114,182,0.12); color: var(--pink); }
+
+  /* DOELEN */
+  .goal-item { margin-bottom: 14px; }
+  .goal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; font-size: 13px; }
+  .goal-name { font-weight: 500; }
+  .goal-pct { font-size: 12px; color: var(--muted); }
+  .progress-bar { height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+  .progress-fill { height: 100%; border-radius: 2px; }
+
+  /* FINANCIEN */
+  .finance-item { display: flex; align-items: center; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+  .finance-item:last-child { border-bottom: none; }
+  .finance-cat { display: flex; align-items: center; gap: 8px; }
+  .finance-icon { width: 28px; height: 28px; border-radius: 7px; display: flex; align-items: center; justify-content: center; font-size: 13px; }
+  .finance-amount { font-weight: 600; font-size: 13px; }
+  .amount-in { color: var(--success); }
+  .amount-out { color: var(--danger); }
+
+  /* AGENDA */
+  .agenda-item { display: flex; gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+  .agenda-item:last-child { border-bottom: none; }
+  .agenda-time { font-size: 11px; color: var(--muted); width: 44px; flex-shrink: 0; padding-top: 2px; }
+  .agenda-bar { width: 3px; border-radius: 2px; flex-shrink: 0; }
+  .agenda-info { flex: 1; }
+  .agenda-title { font-weight: 500; line-height: 1.3; }
+  .agenda-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+  /* QUICK ADD */
+  .quick-add { display: flex; align-items: center; gap: 8px; padding: 10px 0 0; }
+  .quick-input { flex: 1; background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; padding: 7px 10px; font-size: 13px; color: var(--text); font-family: inherit; outline: none; transition: border-color 0.15s; }
+  .quick-input:focus { border-color: var(--accent); }
+  .quick-input::placeholder { color: var(--muted); }
+  .quick-btn { background: var(--accent); border: none; border-radius: 6px; color: white; font-size: 13px; font-family: inherit; padding: 7px 14px; cursor: pointer; font-weight: 500; transition: opacity 0.15s; }
+  .quick-btn:hover { opacity: 0.85; }
+
+  /* ENERGY */
+  .energy-row { display: flex; gap: 6px; margin-bottom: 14px; }
+  .energy-btn { flex: 1; padding: 8px; border-radius: 7px; border: 1.5px solid var(--border); background: transparent; color: var(--muted); font-size: 18px; cursor: pointer; transition: all 0.15s; }
+  .energy-btn:hover { border-color: var(--accent); }
+  .energy-btn.selected { border-color: var(--accent); background: rgba(124,106,255,0.12); }
+  .note-area { width: 100%; background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 10px; color: var(--text); font-family: inherit; font-size: 13px; resize: none; outline: none; line-height: 1.6; transition: border-color 0.15s; }
+  .note-area:focus { border-color: var(--accent); }
+
+  /* AGENT BANNER */
+  .agent-banner { background: linear-gradient(135deg, rgba(124,106,255,0.15), rgba(62,207,178,0.08)); border: 1px solid rgba(124,106,255,0.3); border-radius: 12px; padding: 16px 20px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .agent-left { display: flex; align-items: center; gap: 12px; }
+  .agent-icon { width: 36px; height: 36px; background: rgba(124,106,255,0.2); border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+  .agent-text { font-size: 13px; }
+  .agent-title { font-weight: 600; margin-bottom: 2px; }
+  .agent-sub { color: var(--muted); font-size: 12px; }
+  .agent-status { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--accent2); background: rgba(62,207,178,0.1); padding: 5px 10px; border-radius: 6px; font-weight: 500; }
+  .pulse { width: 6px; height: 6px; border-radius: 50%; background: var(--accent2); animation: pulse 2s infinite; }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+  /* GYM SPECIFIEK */
+  .day-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; margin-bottom: 4px; }
+  .day-btn { padding: 8px 4px; border-radius: 7px; border: 1.5px solid var(--border); background: transparent; color: var(--muted); font-size: 11px; cursor: pointer; transition: all 0.15s; text-align: center; font-family: inherit; }
+  .day-btn:hover { border-color: var(--accent); color: var(--text); }
+  .day-btn.active { border-color: var(--green); background: rgba(74,222,128,0.1); color: var(--green); }
+  .day-btn.rest { border-color: var(--muted); background: rgba(107,107,120,0.1); color: var(--muted); }
+  .day-label { font-size: 9px; text-align: center; color: var(--muted); margin-bottom: 10px; display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
+  .day-label span { text-align: center; }
+
+  .meal-item { display: flex; align-items: center; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+  .meal-item:last-child { border-bottom: none; }
+  .meal-time { font-size: 11px; color: var(--accent2); font-weight: 600; width: 55px; flex-shrink: 0; }
+  .meal-name { flex: 1; }
+  .meal-kcal { font-size: 11px; color: var(--muted); }
+
+  .run-item { display: flex; align-items: center; gap: 12px; padding: 9px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+  .run-item:last-child { border-bottom: none; }
+  .run-icon { font-size: 16px; }
+  .run-info { flex: 1; }
+  .run-title { font-weight: 500; }
+  .run-sub { font-size: 11px; color: var(--muted); margin-top: 1px; }
+  .run-stat { text-align: right; }
+  .run-dist { font-weight: 600; color: var(--green); font-size: 13px; }
+  .run-time { font-size: 11px; color: var(--muted); }
+
+  /* OPLEIDING */
+  .course-item { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--border); }
+  .course-item:last-child { border-bottom: none; }
+  .course-icon { width: 34px; height: 34px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+  .course-info { flex: 1; }
+  .course-name { font-size: 13px; font-weight: 500; margin-bottom: 2px; }
+  .course-sub { font-size: 11px; color: var(--muted); }
+  .course-progress { width: 80px; }
+  .course-pct { font-size: 11px; color: var(--muted); text-align: right; margin-bottom: 4px; }
+
+  .cert-item { display: flex; align-items: center; gap: 10px; padding: 9px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+  .cert-item:last-child { border-bottom: none; }
+  .cert-badge { font-size: 18px; }
+  .cert-info { flex: 1; }
+  .cert-name { font-weight: 500; }
+  .cert-date { font-size: 11px; color: var(--muted); margin-top: 1px; }
+  .cert-status { font-size: 11px; padding: 3px 8px; border-radius: 4px; font-weight: 500; }
+  .status-done { background: rgba(74,222,128,0.12); color: var(--green); }
+  .status-busy { background: rgba(124,106,255,0.12); color: var(--accent); }
+  .status-plan { background: rgba(107,107,120,0.12); color: var(--muted); }
+
+  /* DEEN / GELOOF */
+  .quran-tracker { display: grid; grid-template-columns: repeat(10, 1fr); gap: 4px; margin-bottom: 6px; }
+  .juz-box { aspect-ratio: 1; border-radius: 4px; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 9px; color: var(--muted); cursor: pointer; transition: all 0.15s; }
+  .juz-box:hover { border-color: var(--gold); }
+  .juz-box.read { background: rgba(251,191,36,0.15); border-color: var(--gold); color: var(--gold); font-weight: 600; }
+  .juz-box.memorized { background: rgba(251,191,36,0.4); border-color: var(--gold); color: var(--gold); font-weight: 700; }
+
+  .prayer-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-bottom: 4px; }
+  .prayer-btn { padding: 10px 4px; border-radius: 8px; border: 1.5px solid var(--border); background: transparent; color: var(--muted); font-size: 11px; cursor: pointer; transition: all 0.15s; text-align: center; font-family: inherit; }
+  .prayer-btn:hover { border-color: var(--gold); }
+  .prayer-btn.done { border-color: var(--gold); background: rgba(251,191,36,0.1); color: var(--gold); }
+  .prayer-name { font-weight: 600; display: block; margin-bottom: 2px; }
+  .prayer-time { font-size: 10px; color: var(--muted); display: block; }
+  .prayer-btn.done .prayer-time { color: rgba(251,191,36,0.7); }
+
+  .knowledge-item { display: flex; gap: 10px; padding: 9px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+  .knowledge-item:last-child { border-bottom: none; }
+  .knowledge-cat { width: 6px; border-radius: 2px; flex-shrink: 0; }
+  .knowledge-info { flex: 1; }
+  .knowledge-title { font-weight: 500; margin-bottom: 2px; }
+  .knowledge-sub { font-size: 11px; color: var(--muted); }
+
+  /* TABS */
+  .tabs { display: flex; gap: 4px; margin-bottom: 20px; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 4px; width: fit-content; }
+  .tab-btn { padding: 7px 16px; border-radius: 7px; border: none; background: transparent; color: var(--muted); font-size: 13px; font-family: inherit; cursor: pointer; transition: all 0.15s; font-weight: 500; }
+  .tab-btn:hover { color: var(--text); }
+  .tab-btn.active { background: var(--surface2); color: var(--text); }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  /* DIVIDER */
+  .section-title { font-family: 'Space Grotesk', sans-serif; font-size: 13px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin: 20px 0 12px; }
+
+  @media (max-width: 700px) {
+    .sidebar { display: none; }
+    .main { margin-left: 0; padding: 24px 16px; }
+    .stats-row { grid-template-columns: repeat(2, 1fr); }
+    .grid, .grid-wide, .grid-3 { grid-template-columns: 1fr; }
+    .day-grid { grid-template-columns: repeat(7, 1fr); }
+    .quran-tracker { grid-template-columns: repeat(6, 1fr); }
+    .prayer-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<nav class="sidebar">
+  <div class="sidebar-logo"><span>N</span> Nahari</div>
+
+  <div class="nav-section">Werkruimte</div>
+  <div class="nav-item active" onclick="showPage(&#39;dashboard&#39;, this)"><span class="icon">🏠</span> Dashboard</div>
+  <div class="nav-item" onclick="showPage(&#39;taken&#39;, this)"><span class="icon">✅</span> Taken</div>
+  <div class="nav-item" onclick="showPage(&#39;doelen&#39;, this)"><span class="icon">🎯</span> Doelen</div>
+  <div class="nav-item" onclick="showPage(&#39;projecten&#39;, this)"><span class="icon">📁</span> Projecten</div>
+
+  <div class="nav-section" style="margin-top:8px">Planning</div>
+  <div class="nav-item" onclick="showPage(&#39;agenda&#39;, this)"><span class="icon">📅</span> Agenda</div>
+  <div class="nav-item" onclick="showPage(&#39;dagboek&#39;, this)"><span class="icon">📓</span> Dagboek</div>
+
+  <div class="nav-section" style="margin-top:8px">Lifestyle</div>
+  <div class="nav-item" onclick="showPage(&#39;gym&#39;, this)"><span class="icon">💪</span> Gym &amp; Lifestyle</div>
+
+  <div class="nav-section" style="margin-top:8px">Groei</div>
+  <div class="nav-item" onclick="showPage(&#39;opleiding&#39;, this)"><span class="icon">🎓</span> Opleiding &amp; CV</div>
+  <div class="nav-item" onclick="showPage(&#39;deen&#39;, this)"><span class="icon">☪️</span> Deen &amp; Kennis</div>
+
+  <div class="nav-section" style="margin-top:8px">Overig</div>
+  <div class="nav-item" onclick="showPage(&#39;financien&#39;, this)"><span class="icon">💰</span> Financiën</div>
+  <div class="nav-item"><span class="icon">🤖</span> AI Agent</div>
+  <div class="nav-item"><span class="icon">⚙️</span> Instellingen</div>
+</nav>
+
+<!-- MAIN -->
+<main class="main">
+
+<!-- ===== DASHBOARD ===== -->
+<div class="page active" id="page-dashboard">
+  <div class="page-header">
+    <div class="page-date" id="datum">Woensdag 17 juni 2026</div>
+    <h1 class="page-title">Goedemorgen, <span class="highlight">Nahari</span> 👋</h1>
+  </div>
+
+  <div class="agent-banner">
+    <div class="agent-left">
+      <div class="agent-icon">🤖</div>
+      <div class="agent-text">
+        <div class="agent-title">AI Agent actief</div>
+        <div class="agent-sub">Dagplanning voorbereid · 3 taken geprioriteerd · 2 mails verwerkt</div>
+      </div>
+    </div>
+    <div class="agent-status"><div class="pulse"></div> Actief</div>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-label">Taken vandaag</div>
+      <div class="stat-value" style="color:var(--accent)">5</div>
+      <div class="stat-sub"><span class="dot" style="background:var(--accent2)"></span>2 afgerond</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Training streak</div>
+      <div class="stat-value" style="color:var(--green)">🔥 12</div>
+      <div class="stat-sub"><span class="dot" style="background:var(--green)"></span>dagen op rij</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Cursussen actief</div>
+      <div class="stat-value" style="color:var(--blue)">3</div>
+      <div class="stat-sub"><span class="dot" style="background:var(--accent3)"></span>1 bijna klaar</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Gebeden vandaag</div>
+      <div class="stat-value" style="color:var(--gold)">3/5</div>
+      <div class="stat-sub"><span class="dot" style="background:var(--gold)"></span>Asr nog te doen</div>
+    </div>
+  </div>
+
+  <div class="grid grid-wide">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">✅ Taken vandaag</div>
+        <button class="card-action">+ Toevoegen</button>
+      </div>
+      <div id="dash-task-list">
+        <div class="task-item" onclick="toggleTask(this)">
+          <div class="task-check done">✓</div>
+          <div class="task-text done">Agent workflow bouwen</div>
+          <span class="task-tag tag-purple">Systeem</span>
+        </div>
+        <div class="task-item" onclick="toggleTask(this)">
+          <div class="task-check"></div>
+          <div class="task-text">Fajr &amp; Duhr gebed</div>
+          <span class="task-tag tag-gold">Deen</span>
+        </div>
+        <div class="task-item" onclick="toggleTask(this)">
+          <div class="task-check"></div>
+          <div class="task-text">Push dag training</div>
+          <span class="task-tag tag-green">Gym</span>
+        </div>
+        <div class="task-item" onclick="toggleTask(this)">
+          <div class="task-check"></div>
+          <div class="task-text">AI cursus module 4 afmaken</div>
+          <span class="task-tag tag-blue">Opleiding</span>
+        </div>
+      </div>
+      <div class="quick-add">
+        <input class="quick-input" id="dash-task-input" placeholder="Nieuwe taak..." onkeydown="addDashTask(event)">
+        <button class="quick-btn" onclick="addDashTaskBtn()">+</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><div class="card-title">📅 Vandaag</div></div>
+      <div class="agenda-item">
+        <div class="agenda-time">06:00</div>
+        <div class="agenda-bar" style="background:var(--gold)"></div>
+        <div class="agenda-info"><div class="agenda-title">Fajr gebed</div><div class="agenda-sub">Ochtendgebed</div></div>
+      </div>
+      <div class="agenda-item">
+        <div class="agenda-time">08:00</div>
+        <div class="agenda-bar" style="background:var(--green)"></div>
+        <div class="agenda-info"><div class="agenda-title">Push training</div><div class="agenda-sub">Borst · Schouders · Triceps</div></div>
+      </div>
+      <div class="agenda-item">
+        <div class="agenda-time">10:00</div>
+        <div class="agenda-bar" style="background:var(--accent)"></div>
+        <div class="agenda-info"><div class="agenda-title">Deep work — AI systeem</div><div class="agenda-sub">2 uur focus</div></div>
+      </div>
+      <div class="agenda-item">
+        <div class="agenda-time">18:00</div>
+        <div class="agenda-bar" style="background:var(--blue)"></div>
+        <div class="agenda-info"><div class="agenda-title">AI cursus module 4</div><div class="agenda-sub">45 min</div></div>
+      </div>
+      <div class="agenda-item">
+        <div class="agenda-time">20:00</div>
+        <div class="agenda-bar" style="background:var(--pink)"></div>
+        <div class="agenda-info"><div class="agenda-title">Quran lezen — 1 pagina</div><div class="agenda-sub">Dagelijks doel</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== GYM & LIFESTYLE ===== -->
+<div class="page" id="page-gym">
+  <div class="page-header">
+    <div class="page-date" id="datum-gym">Woensdag 17 juni 2026</div>
+    <h1 class="page-title">💪 Gym &amp; <span class="highlight">Lifestyle</span></h1>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" onclick="showTab(&#39;gym&#39;, &#39;training&#39;, this)">Training</button>
+    <button class="tab-btn" onclick="showTab(&#39;gym&#39;, &#39;eetschema&#39;, this)">Eetschema</button>
+    <button class="tab-btn" onclick="showTab(&#39;gym&#39;, &#39;hardlopen&#39;, this)">Hardlopen</button>
+  </div>
+
+  <!-- TRAINING TAB -->
+  <div class="tab-content active" id="gym-training">
+    <div class="grid">
+      <div class="card">
+        <div class="card-header"><div class="card-title">📅 Week schema</div><button class="card-action">Bewerken</button></div>
+        <div class="day-label">
+          <span>Ma</span><span>Di</span><span>Wo</span><span>Do</span><span>Vr</span><span>Za</span><span>Zo</span>
+        </div>
+        <div class="day-grid">
+          <button class="day-btn active" onclick="toggleDay(this)">Push<br><span style="font-size:9px">✓</span></button>
+          <button class="day-btn active" onclick="toggleDay(this)">Pull<br><span style="font-size:9px">✓</span></button>
+          <button class="day-btn active" onclick="toggleDay(this)">Benen<br><span style="font-size:9px">✓</span></button>
+          <button class="day-btn" onclick="toggleDay(this)">Push</button>
+          <button class="day-btn" onclick="toggleDay(this)">Pull</button>
+          <button class="day-btn rest">Rest</button>
+          <button class="day-btn rest">Rest</button>
+        </div>
+        <div style="font-size:11px;color:var(--muted);margin-top:8px">🔥 Streak: 12 dagen op rij</div>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><div class="card-title">💪 Vandaag: Push</div><button class="card-action">Loggen</button></div>
+        <div class="task-item" onclick="toggleTask(this)">
+          <div class="task-check"></div>
+          <div class="task-text">Bankdrukken — 4×8 @ 80kg</div>
+          <span class="task-tag tag-green">Borst</span>
+        </div>
+        <div class="task-item" onclick="toggleTask(this)">
+          <div class="task-check"></div>
+          <div class="task-text">Schouderdrukken — 4×10 @ 60kg</div>
+          <span class="task-tag tag-teal">Schouder</span>
+        </div>
+        <div class="task-item" onclick="toggleTask(this)">
+          <div class="task-check"></div>
+          <div class="task-text">Triceps pushdown — 3×12</div>
+          <span class="task-tag tag-purple">Triceps</span>
+        </div>
+        <div class="task-item" onclick="toggleTask(this)">
+          <div class="task-check"></div>
+          <div class="task-text">Incline dumbbell — 3×10 @ 30kg</div>
+          <span class="task-tag tag-green">Borst</span>
+        </div>
+        <div class="task-item" onclick="toggleTask(this)">
+          <div class="task-check"></div>
+          <div class="task-text">Lateral raises — 3×15 @ 12kg</div>
+          <span class="task-tag tag-teal">Schouder</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <div class="card-header"><div class="card-title">📊 Persoonlijke records</div></div>
+        <div class="finance-item">
+          <div class="finance-cat"><div class="finance-icon" style="background:rgba(74,222,128,0.1)">🏋️</div><div><div style="font-weight:500">Bankdrukken</div><div style="font-size:11px;color:var(--muted)">PR behaald 3 jun</div></div></div>
+          <div style="font-weight:700;color:var(--green)">90kg</div>
+        </div>
+        <div class="finance-item">
+          <div class="finance-cat"><div class="finance-icon" style="background:rgba(96,165,250,0.1)">🏋️</div><div><div style="font-weight:500">Deadlift</div><div style="font-size:11px;color:var(--muted)">PR behaald 10 jun</div></div></div>
+          <div style="font-weight:700;color:var(--blue)">140kg</div>
+        </div>
+        <div class="finance-item">
+          <div class="finance-cat"><div class="finance-icon" style="background:rgba(245,166,35,0.1)">🏋️</div><div><div style="font-weight:500">Squat</div><div style="font-size:11px;color:var(--muted)">PR behaald 1 jun</div></div></div>
+          <div style="font-weight:700;color:var(--accent3)">110kg</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="card-title">📝 Trainingsnotities</div></div>
+        <textarea class="note-area" rows="6" placeholder="Hoe voelde de training? Wat wil je volgende keer anders?"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- EETSCHEMA TAB -->
+  <div class="tab-content" id="gym-eetschema">
+    <div class="grid">
+      <div class="card">
+        <div class="card-header"><div class="card-title">🍽️ Eetschema vandaag</div><button class="card-action">Bewerken</button></div>
+        <div class="meal-item">
+          <div class="meal-time">07:00</div>
+          <div class="meal-name">Havermout + banaan + eiwitten</div>
+          <div class="meal-kcal">~550 kcal</div>
+        </div>
+        <div class="meal-item">
+          <div class="meal-time">10:30</div>
+          <div class="meal-name">Kwark + noten + fruit</div>
+          <div class="meal-kcal">~300 kcal</div>
+        </div>
+        <div class="meal-item">
+          <div class="meal-time">13:00</div>
+          <div class="meal-name">Kip + rijst + groenten</div>
+          <div class="meal-kcal">~700 kcal</div>
+        </div>
+        <div class="meal-item">
+          <div class="meal-time">16:00</div>
+          <div class="meal-name">Pre-workout shake + banaan</div>
+          <div class="meal-kcal">~250 kcal</div>
+        </div>
+        <div class="meal-item">
+          <div class="meal-time">19:00</div>
+          <div class="meal-name">Zalm + zoete aardappel + salade</div>
+          <div class="meal-kcal">~650 kcal</div>
+        </div>
+        <div class="meal-item">
+          <div class="meal-time">21:30</div>
+          <div class="meal-name">Caseïne shake + rijstwafels</div>
+          <div class="meal-kcal">~300 kcal</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><div class="card-title">📊 Macro's vandaag</div></div>
+        <div style="margin-bottom:16px">
+          <div class="goal-header"><span class="goal-name">Calorieën</span><span class="goal-pct">2750 / 3000 kcal</span></div>
+          <div class="progress-bar"><div class="progress-fill" style="width:92%;background:var(--accent3)"></div></div>
+        </div>
+        <div style="margin-bottom:16px">
+          <div class="goal-header"><span class="goal-name">Eiwitten</span><span class="goal-pct">185 / 200g</span></div>
+          <div class="progress-bar"><div class="progress-fill" style="width:92%;background:var(--green)"></div></div>
+        </div>
+        <div style="margin-bottom:16px">
+          <div class="goal-header"><span class="goal-name">Koolhydraten</span><span class="goal-pct">280 / 320g</span></div>
+          <div class="progress-bar"><div class="progress-fill" style="width:87%;background:var(--blue)"></div></div>
+        </div>
+        <div>
+          <div class="goal-header"><span class="goal-name">Vetten</span><span class="goal-pct">75 / 80g</span></div>
+          <div class="progress-bar"><div class="progress-fill" style="width:94%;background:var(--pink)"></div></div>
+        </div>
+        <div style="margin-top:16px">
+          <textarea class="note-area" rows="3" placeholder="Hoe voelde je eetpatroon vandaag?"></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HARDLOPEN TAB -->
+  <div class="tab-content" id="gym-hardlopen">
+    <div class="grid">
+      <div class="card">
+        <div class="card-header"><div class="card-title">🏃 Loopschema deze week</div><button class="card-action">Log run</button></div>
+        <div class="run-item">
+          <div class="run-icon">✅</div>
+          <div class="run-info"><div class="run-title">Maandag — Easy run</div><div class="run-sub">Zone 2 · Herstel</div></div>
+          <div class="run-stat"><div class="run-dist">5.2 km</div><div class="run-time">28:14</div></div>
+        </div>
+        <div class="run-item">
+          <div class="run-icon">✅</div>
+          <div class="run-info"><div class="run-title">Woensdag — Tempo run</div><div class="run-sub">4:45/km pace</div></div>
+          <div class="run-stat"><div class="run-dist">8.0 km</div><div class="run-time">38:02</div></div>
+        </div>
+        <div class="run-item">
+          <div class="run-icon">⏳</div>
+          <div class="run-info"><div class="run-title">Vrijdag — Long run</div><div class="run-sub">Doel: 12 km</div></div>
+          <div class="run-stat"><div class="run-dist" style="color:var(--muted)">— km</div><div class="run-time">gepland</div></div>
+        </div>
+        <div class="quick-add">
+          <input class="quick-input" placeholder="Noteer afstand (bijv. 10.5 km)...">
+          <button class="quick-btn">+</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><div class="card-title">🏆 Loopstatistieken</div></div>
+        <div class="finance-item">
+          <div style="font-weight:500">Deze maand</div>
+          <div style="font-weight:700;color:var(--green)">52.4 km</div>
+        </div>
+        <div class="finance-item">
+          <div style="font-weight:500">Beste 5km</div>
+          <div style="font-weight:700;color:var(--blue)">22:18</div>
+        </div>
+        <div class="finance-item">
+          <div style="font-weight:500">Beste 10km</div>
+          <div style="font-weight:700;color:var(--accent)">48:45</div>
+        </div>
+        <div class="finance-item">
+          <div style="font-weight:500">Doel: halve marathon</div>
+          <div><span class="task-tag tag-orange">Nov 2025</span></div>
+        </div>
+        <div style="margin-top:14px">
+          <div class="goal-header"><span class="goal-name">Maanddoel: 60 km</span><span class="goal-pct">87%</span></div>
+          <div class="progress-bar"><div class="progress-fill" style="width:87%;background:var(--green)"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== OPLEIDING & CV ===== -->
+<div class="page" id="page-opleiding">
+  <div class="page-header">
+    <div class="page-date" id="datum-opl">Woensdag 17 juni 2026</div>
+    <h1 class="page-title">🎓 Opleiding &amp; <span class="highlight">CV</span></h1>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn" onclick="showTab(&#39;opl&#39;, &#39;cursussen&#39;, this)">Cursussen</button>
+    <button class="tab-btn" onclick="showTab(&#39;opl&#39;, &#39;cv&#39;, this)">CV Monteur</button>
+    <button class="tab-btn active" onclick="showTab(&#39;opl&#39;, &#39;zzp&#39;, this)">ZZP</button>
+  </div>
+
+  <!-- CURSUSSEN TAB -->
+  <div class="tab-content" id="opl-cursussen">
+    <div class="grid">
+      <div class="card">
+        <div class="card-header"><div class="card-title">📚 Actieve cursussen</div><button class="card-action">+ Toevoegen</button></div>
+
+        <div class="course-item">
+          <div class="course-icon" style="background:rgba(124,106,255,0.15)">🤖</div>
+          <div class="course-info">
+            <div class="course-name">AI &amp; Prompt Engineering</div>
+            <div class="course-sub">Anthropic · Module 4 van 8</div>
+          </div>
+          <div class="course-progress">
+            <div class="course-pct">50%</div>
+            <div class="progress-bar"><div class="progress-fill" style="width:50%;background:var(--accent)"></div></div>
+          </div>
+        </div>
+
+        <div class="course-item">
+          <div class="course-icon" style="background:rgba(96,165,250,0.15)">💻</div>
+          <div class="course-info">
+            <div class="course-name">Python voor Beginners</div>
+            <div class="course-sub">Udemy · Module 7 van 10</div>
+          </div>
+          <div class="course-progress">
+            <div class="course-pct">70%</div>
+            <div class="progress-bar"><div class="progress-fill" style="width:70%;background:var(--blue)"></div></div>
+          </div>
+        </div>
+
+        <div class="course-item">
+          <div class="course-icon" style="background:rgba(62,207,178,0.15)">📊</div>
+          <div class="course-info">
+            <div class="course-name">Ondernemen als ZZP'er</div>
+            <div class="course-sub">KVK Academy · Module 3 van 6</div>
+          </div>
+          <div class="course-progress">
+            <div class="course-pct">50%</div>
+            <div class="progress-bar"><div class="progress-fill" style="width:50%;background:var(--accent2)"></div></div>
+          </div>
+        </div>
+
+        <div class="course-item">
+          <div class="course-icon" style="background:rgba(245,166,35,0.15)">🚗</div>
+          <div class="course-info">
+            <div class="course-name">Elektrotechniek voertuigen</div>
+            <div class="course-sub">ROC · Theorie examen 20 jul</div>
+          </div>
+          <div class="course-progress">
+            <div class="course-pct">85%</div>
+            <div class="progress-bar"><div class="progress-fill" style="width:85%;background:var(--accent3)"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><div class="card-title">🏆 Certificaten</div></div>
+        <div class="cert-item">
+          <div class="cert-badge">🥇</div>
+          <div class="cert-info">
+            <div class="cert-name">APK Keuring Basis</div>
+            <div class="cert-date">Behaald jan 2024</div>
+          </div>
+          <div class="cert-status status-done">Behaald</div>
+        </div>
+        <div class="cert-item">
+          <div class="cert-badge">🔧</div>
+          <div class="cert-info">
+            <div class="cert-name">Diagnose &amp; Storing</div>
+            <div class="cert-date">Behaald mrt 2024</div>
+          </div>
+          <div class="cert-status status-done">Behaald</div>
+        </div>
+        <div class="cert-item">
+          <div class="cert-badge">🤖</div>
+          <div class="cert-info">
+            <div class="cert-name">AI Fundamentals</div>
+            <div class="cert-date">Verwacht aug 2025</div>
+          </div>
+          <div class="cert-status status-busy">Bezig</div>
+        </div>
+        <div class="cert-item">
+          <div class="cert-badge">💼</div>
+          <div class="cert-info">
+            <div class="cert-name">ZZP Administratie</div>
+            <div class="cert-date">Gepland okt 2025</div>
+          </div>
+          <div class="cert-status status-plan">Gepland</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><div class="card-title">📝 Studienotities</div></div>
+      <textarea class="note-area" rows="4" placeholder="Wat heb je vandaag geleerd? Noteer inzichten, vragen of volgende stappen..."></textarea>
+    </div>
+  </div>
+
+  <!-- CV TAB -->
+  <div class="tab-content" id="opl-cv">
+    <div class="grid">
+      <div class="card">
+        <div class="card-header"><div class="card-title">🔧 Vaardigheden CV Monteur</div><button class="card-action">Bijwerken</button></div>
+        <div class="task-item" onclick="toggleTask(this)">
+          <div class="task-check done">✓</div><div class="task-text done">Motor en transmissie</div><span class="task-tag tag-green">Expert</span>
+        </div>
+        <div class="task-item" onclick="toggleTask(this)">
+          <div class="task-check done">✓</div><div class="task-text done">Remmen &amp; ophanging</div><span class="task-tag tag-green">Expert</span>
+        </div>
+        <div class="task-item" onclick="toggleTask(this)">
+          <div class="task-check done">✓</div><div class="task-text done">APK keuring uitvoeren</div><span class="task-tag tag-teal">Gevorderd</span>
+        </div>
+        <div class="task-item" onclick="toggleTask(this)">
+          <div class="task-check"></div><div class="task-text">Elektronica &amp; boordcomputer</div><span class="task-tag tag-orange">Lerende</span>
+        </div>
+        <div class="task-item" onclick="toggleTask(this)">
+          <div class="task-check"></div><div class="task-text">Hybride &amp; elektrische voertuigen</div><span class="task-tag tag-purple">Studerend</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><div class="card-title">📋 Werkervaring</div></div>
+        <div class="agenda-item">
+          <div class="agenda-time">Heden</div>
+          <div class="agenda-bar" style="background:var(--accent)"></div>
+          <div class="agenda-info"><div class="agenda-title">Garage De Vries</div><div class="agenda-sub">Allround monteur · 2022–nu</div></div>
+        </div>
+        <div class="agenda-item">
+          <div class="agenda-time">2022</div>
+          <div class="agenda-bar" style="background:var(--accent2)"></div>
+          <div class="agenda-info"><div class="agenda-title">Peugeot Amsterdam</div><div class="agenda-sub">Monteur stagiair · 2021–2022</div></div>
+        </div>
+        <div class="agenda-item">
+          <div class="agenda-time">2021</div>
+          <div class="agenda-bar" style="background:var(--muted)"></div>
+          <div class="agenda-info"><div class="agenda-title">MBO Autotechniek</div><div class="agenda-sub">Diploma behaald · 2019–2021</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ZZP TAB -->
+  <div class="tab-content active" id="opl-zzp">
+    <div class="grid">
+      <div class="card">
+        <div class="card-header"><div class="card-title">💼 ZZP Checklist</div></div>
+        <div class="task-item" onclick="toggleTask(this)">
+          <div class="task-check done">✓</div><div class="task-text done">KVK inschrijving</div><span class="task-tag tag-green">Klaar</span>
+        </div>
+        <div class="task-item" onclick="toggleTask(this)">
+          <div class="task-check done">✓</div><div class="task-text done">Zakelijke rekening openen</div><span class="task-tag tag-green">Klaar</span>
+        </div>
+        <div class="task-item" onclick="toggleTask(this)">
+          <div class="task-check"></div><div class="task-text">BTW nummer aanvragen</div><span class="task-tag tag-orange">Todo</span>
+        </div>
+        <div class="task-item" onclick="toggleTask(this)">
+          <div class="task-check"></div><div class="task-text">Factuurtemplate maken</div><span class="task-tag tag-orange">Todo</span>
+        </div>
+        <div class="task-item" onclick="toggleTask(this)">
+          <div class="task-check"></div><div class="task-text">Boekhoudprogramma kiezen</div><span class="task-tag tag-purple">Onderzoek</span>
+        </div>
+        <div class="task-item" onclick="toggleTask(this)">
+          <div class="task-check"></div><div class="task-text">Aansprakelijkheidsverzekering</div><span class="task-tag tag-red">Urgent</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="card-title">📊 ZZP Doelen</div></div>
+        <div class="goal-item">
+          <div class="goal-header"><span class="goal-name">Eerste klant binnenhalen</span><span class="goal-pct">60%</span></div>
+          <div class="progress-bar"><div class="progress-fill" style="width:60%;background:var(--accent)"></div></div>
+        </div>
+        <div class="goal-item">
+          <div class="goal-header"><span class="goal-name">€2.500 omzet eerste maand</span><span class="goal-pct">0%</span></div>
+          <div class="progress-bar"><div class="progress-fill" style="width:0%;background:var(--accent2)"></div></div>
+        </div>
+        <div class="goal-item">
+          <div class="goal-header"><span class="goal-name">Portfolio/website live</span><span class="goal-pct">30%</span></div>
+          <div class="progress-bar"><div class="progress-fill" style="width:30%;background:var(--accent3)"></div></div>
+        </div>
+        <textarea class="note-area" rows="3" style="margin-top:14px" placeholder="ZZP notities &amp; ideeën..."></textarea>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== DEEN & KENNIS ===== -->
+<div class="page" id="page-deen">
+  <div class="page-header">
+    <div class="page-date" id="datum-deen">Woensdag 17 juni 2026</div>
+    <h1 class="page-title">☪️ Deen &amp; <span class="highlight">Kennis</span></h1>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" onclick="showTab(&#39;deen&#39;, &#39;gebed&#39;, this)">Gebeden</button>
+    <button class="tab-btn" onclick="showTab(&#39;deen&#39;, &#39;quran&#39;, this)">Quran</button>
+    <button class="tab-btn" onclick="showTab(&#39;deen&#39;, &#39;kennis&#39;, this)">Kennis</button>
+  </div>
+
+  <!-- GEBED TAB -->
+  <div class="tab-content active" id="deen-gebed">
+    <div class="grid">
+      <div class="card">
+        <div class="card-header"><div class="card-title">🕌 Gebeden vandaag</div></div>
+        <div class="prayer-grid">
+          <button class="prayer-btn done" onclick="togglePrayer(this)">
+            <span class="prayer-name">Fajr</span>
+            <span class="prayer-time">05:42</span>
+          </button>
+          <button class="prayer-btn done" onclick="togglePrayer(this)">
+            <span class="prayer-name">Dhuhr</span>
+            <span class="prayer-time">13:15</span>
+          </button>
+          <button class="prayer-btn done" onclick="togglePrayer(this)">
+            <span class="prayer-name">Asr</span>
+            <span class="prayer-time">17:02</span>
+          </button>
+          <button class="prayer-btn" onclick="togglePrayer(this)">
+            <span class="prayer-name">Maghrib</span>
+            <span class="prayer-time">21:28</span>
+          </button>
+          <button class="prayer-btn" onclick="togglePrayer(this)">
+            <span class="prayer-name">Isha</span>
+            <span class="prayer-time">23:05</span>
+          </button>
+        </div>
+        <div style="margin-top:14px">
+          <div class="goal-header"><span class="goal-name">Week streak gebeden</span><span class="goal-pct">87%</span></div>
+          <div class="progress-bar"><div class="progress-fill" style="width:87%;background:var(--gold)"></div></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><div class="card-title">📿 Dagelijkse dhikr</div></div>
+        <div class="task-item" onclick="toggleTask(this)">
+          <div class="task-check done">✓</div><div class="task-text done">SubhanAllah × 33</div><span class="task-tag tag-gold">Ochtend</span>
+        </div>
+        <div class="task-item" onclick="toggleTask(this)">
+          <div class="task-check done">✓</div><div class="task-text done">Alhamdulillah × 33</div><span class="task-tag tag-gold">Ochtend</span>
+        </div>
+        <div class="task-item" onclick="toggleTask(this)">
+          <div class="task-check done">✓</div><div class="task-text done">Allahu Akbar × 34</div><span class="task-tag tag-gold">Ochtend</span>
+        </div>
+        <div class="task-item" onclick="toggleTask(this)">
+          <div class="task-check"></div><div class="task-text">Istighfar × 100</div><span class="task-tag tag-orange">Avond</span>
+        </div>
+        <div class="task-item" onclick="toggleTask(this)">
+          <div class="task-check"></div><div class="task-text">Avonddhikr lezen</div><span class="task-tag tag-orange">Avond</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- QURAN TAB -->
+  <div class="tab-content" id="deen-quran">
+    <div class="grid">
+      <div class="card" style="grid-column: span 2">
+        <div class="card-header">
+          <div class="card-title">📖 Quran voortgang — 30 Juz</div>
+          <button class="card-action">Reset</button>
+        </div>
+        <div style="font-size:11px;color:var(--muted);margin-bottom:10px">Klik op een juz om het als gelezen te markeren · Dubbelklik voor gememoriseerd</div>
+        <div class="quran-tracker" id="quran-tracker"><div class="juz-box read memorized">1</div><div class="juz-box read memorized">2</div><div class="juz-box read">3</div><div class="juz-box read">4</div><div class="juz-box read">5</div><div class="juz-box read">6</div><div class="juz-box read">7</div><div class="juz-box read">8</div><div class="juz-box">9</div><div class="juz-box">10</div><div class="juz-box">11</div><div class="juz-box">12</div><div class="juz-box">13</div><div class="juz-box">14</div><div class="juz-box">15</div><div class="juz-box">16</div><div class="juz-box">17</div><div class="juz-box">18</div><div class="juz-box">19</div><div class="juz-box">20</div><div class="juz-box">21</div><div class="juz-box">22</div><div class="juz-box">23</div><div class="juz-box">24</div><div class="juz-box">25</div><div class="juz-box">26</div><div class="juz-box">27</div><div class="juz-box">28</div><div class="juz-box">29</div><div class="juz-box">30</div></div>
+        <div style="display:flex;gap:16px;margin-top:10px;font-size:11px;color:var(--muted)">
+          <span><span style="color:var(--gold)">■</span> Gelezen</span>
+          <span><span style="color:var(--gold);opacity:0.5">■</span> Gememoriseerd</span>
+          <span>□ Niet gelezen</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <div class="card-header"><div class="card-title">📅 Leesschema</div></div>
+        <div class="task-item" onclick="toggleTask(this)">
+          <div class="task-check done">✓</div><div class="task-text done">Fajr — Surah Al-Fatiha herhalen</div><span class="task-tag tag-gold">Ochtend</span>
+        </div>
+        <div class="task-item" onclick="toggleTask(this)">
+          <div class="task-check done">✓</div><div class="task-text done">1 pagina na Dhuhr lezen</div><span class="task-tag tag-gold">Middag</span>
+        </div>
+        <div class="task-item" onclick="toggleTask(this)">
+          <div class="task-check"></div><div class="task-text">Tafsir studie — 15 min</div><span class="task-tag tag-orange">Avond</span>
+        </div>
+        <div class="task-item" onclick="toggleTask(this)">
+          <div class="task-check"></div><div class="task-text">1 pagina voor het slapen</div><span class="task-tag tag-orange">Nacht</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><div class="card-title">📊 Quran statistieken</div></div>
+        <div class="finance-item">
+          <div style="font-weight:500">Pagina's deze maand</div>
+          <div style="font-weight:700;color:var(--gold)">42 p.</div>
+        </div>
+        <div class="finance-item">
+          <div style="font-weight:500">Juz gelezen (totaal)</div>
+          <div style="font-weight:700;color:var(--gold)">8 / 30</div>
+        </div>
+        <div class="finance-item">
+          <div style="font-weight:500">Dagelijkse leesstreak</div>
+          <div style="font-weight:700;color:var(--green)">🔥 9 dagen</div>
+        </div>
+        <div style="margin-top:14px">
+          <div class="goal-header"><span class="goal-name">Doel: volledige Quran</span><span class="goal-pct">27%</span></div>
+          <div class="progress-bar"><div class="progress-fill" style="width:27%;background:var(--gold)"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- KENNIS TAB -->
+  <div class="tab-content" id="deen-kennis">
+    <div class="grid">
+      <div class="card">
+        <div class="card-header"><div class="card-title">📚 Islamitische kennis</div><button class="card-action">+ Toevoegen</button></div>
+        <div class="knowledge-item">
+          <div class="knowledge-cat" style="background:var(--gold)"></div>
+          <div class="knowledge-info">
+            <div class="knowledge-title">Fiqh — Gebed &amp; Wudu</div>
+            <div class="knowledge-sub">Regels rondom gebed en reinheid</div>
+          </div>
+          <span class="task-tag tag-gold">Studerend</span>
+        </div>
+        <div class="knowledge-item">
+          <div class="knowledge-cat" style="background:var(--accent2)"></div>
+          <div class="knowledge-info">
+            <div class="knowledge-title">Seerah — Leven van de Profeet ﷺ</div>
+            <div class="knowledge-sub">Biografie van de Profeet Mohammed ﷺ</div>
+          </div>
+          <span class="task-tag tag-teal">Lerende</span>
+        </div>
+        <div class="knowledge-item">
+          <div class="knowledge-cat" style="background:var(--accent)"></div>
+          <div class="knowledge-info">
+            <div class="knowledge-title">Tafsir — Uitleg Quran</div>
+            <div class="knowledge-sub">Ibn Kathir · Juz Amma</div>
+          </div>
+          <span class="task-tag tag-purple">Bezig</span>
+        </div>
+        <div class="knowledge-item">
+          <div class="knowledge-cat" style="background:var(--blue)"></div>
+          <div class="knowledge-info">
+            <div class="knowledge-title">Hadith — Sahih al-Bukhari</div>
+            <div class="knowledge-sub">Dagelijks 1 hadith lezen</div>
+          </div>
+          <span class="task-tag tag-blue">Dagelijks</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><div class="card-title">✍️ Kennisnotities</div></div>
+        <textarea class="note-area" rows="8" placeholder="Noteer wat je hebt geleerd over Islam, Quran, of andere kennis. Bijv. uitleg van een ayah, een hadith die je raakte, of inzichten van een les..."></textarea>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><div class="card-title">🎯 Deen doelen</div></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">
+        <div>
+          <div class="goal-header"><span class="goal-name">Quran volledig lezen</span><span class="goal-pct">27%</span></div>
+          <div class="progress-bar"><div class="progress-fill" style="width:27%;background:var(--gold)"></div></div>
+        </div>
+        <div>
+          <div class="goal-header"><span class="goal-name">Alle 5 gebeden halen</span><span class="goal-pct">87%</span></div>
+          <div class="progress-bar"><div class="progress-fill" style="width:87%;background:var(--accent2)"></div></div>
+        </div>
+        <div>
+          <div class="goal-header"><span class="goal-name">Seerah boek uitlezen</span><span class="goal-pct">45%</span></div>
+          <div class="progress-bar"><div class="progress-fill" style="width:45%;background:var(--accent)"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== FINANCIEN ===== -->
+<div class="page" id="page-financien">
+  <div class="page-header">
+    <h1 class="page-title">💰 <span class="highlight">Financiën</span></h1>
+  </div>
+  <div class="grid">
+    <div class="card">
+      <div class="card-header"><div class="card-title">📊 Transacties</div><button class="card-action">+ Toevoegen</button></div>
+      <div class="finance-item">
+        <div class="finance-cat"><div class="finance-icon" style="background:rgba(62,207,178,0.1)">💼</div><div><div style="font-weight:500">Freelance inkomsten</div><div style="font-size:11px;color:var(--muted)">15 jun</div></div></div>
+        <div class="finance-amount amount-in">+€1.200</div>
+      </div>
+      <div class="finance-item">
+        <div class="finance-cat"><div class="finance-icon" style="background:rgba(255,95,95,0.1)">🏠</div><div><div style="font-weight:500">Huur</div><div style="font-size:11px;color:var(--muted)">1 jun</div></div></div>
+        <div class="finance-amount amount-out">-€850</div>
+      </div>
+      <div class="finance-item">
+        <div class="finance-cat"><div class="finance-icon" style="background:rgba(245,166,35,0.1)">🛒</div><div><div style="font-weight:500">Boodschappen</div><div style="font-size:11px;color:var(--muted)">14 jun</div></div></div>
+        <div class="finance-amount amount-out">-€120</div>
+      </div>
+      <div class="finance-item">
+        <div class="finance-cat"><div class="finance-icon" style="background:rgba(124,106,255,0.1)">🔧</div><div><div style="font-weight:500">Software tools</div><div style="font-size:11px;color:var(--muted)">10 jun</div></div></div>
+        <div class="finance-amount amount-out">-€49</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-title">🎯 Sparen</div></div>
+      <div class="goal-item">
+        <div class="goal-header"><span class="goal-name">Noodfonds €5.000</span><span class="goal-pct">54%</span></div>
+        <div class="progress-bar"><div class="progress-fill" style="width:54%;background:var(--accent2)"></div></div>
+      </div>
+      <div class="goal-item">
+        <div class="goal-header"><span class="goal-name">ZZP buffer €3.000</span><span class="goal-pct">30%</span></div>
+        <div class="progress-bar"><div class="progress-fill" style="width:30%;background:var(--accent)"></div></div>
+      </div>
+      <div class="goal-item">
+        <div class="goal-header"><span class="goal-name">Investering €1.000</span><span class="goal-pct">80%</span></div>
+        <div class="progress-bar"><div class="progress-fill" style="width:80%;background:var(--gold)"></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== OVERIGE PAGINA'S ===== -->
+<div class="page" id="page-taken">
+  <div class="page-header"><h1 class="page-title">✅ <span class="highlight">Taken</span></h1></div>
+  <div class="card"><div class="card-header"><div class="card-title">Alle taken</div><button class="card-action">+ Toevoegen</button></div>
+  <div style="color:var(--muted);font-size:13px;padding:20px 0;text-align:center">Taken worden hier gesynchroniseerd via de AI Agent</div></div>
+</div>
+
+<div class="page" id="page-doelen">
+  <div class="page-header"><h1 class="page-title">🎯 <span class="highlight">Doelen</span></h1></div>
+  <div class="card"><div class="card-header"><div class="card-title">Alle doelen</div><button class="card-action">+ Toevoegen</button></div>
+  <div style="color:var(--muted);font-size:13px;padding:20px 0;text-align:center">Doelen beheer — wordt uitgebreid</div></div>
+</div>
+
+<div class="page" id="page-projecten">
+  <div class="page-header"><h1 class="page-title">📁 <span class="highlight">Projecten</span></h1></div>
+  <div class="card"><div class="card-header"><div class="card-title">Alle projecten</div><button class="card-action">+ Nieuw</button></div>
+  <div style="color:var(--muted);font-size:13px;padding:20px 0;text-align:center">Projecten worden hier beheerd</div></div>
+</div>
+
+<div class="page" id="page-agenda">
+  <div class="page-header"><h1 class="page-title">📅 <span class="highlight">Agenda</span></h1></div>
+  <div class="card"><div class="card-header"><div class="card-title">Agenda</div></div>
+  <div style="color:var(--muted);font-size:13px;padding:20px 0;text-align:center">Wordt gekoppeld aan Google Calendar via de Agent</div></div>
+</div>
+
+<div class="page" id="page-dagboek">
+  <div class="page-header"><h1 class="page-title">📓 <span class="highlight">Dagboek</span></h1></div>
+  <div class="card">
+    <div class="card-header"><div class="card-title">Vandaag</div><button class="card-action">Opslaan</button></div>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:8px">Hoe is je energie vandaag?</div>
+    <div class="energy-row">
+      <button class="energy-btn" onclick="selectEnergy(this)">😴</button>
+      <button class="energy-btn" onclick="selectEnergy(this)">😐</button>
+      <button class="energy-btn selected" onclick="selectEnergy(this)">⚡</button>
+      <button class="energy-btn" onclick="selectEnergy(this)">🔥</button>
+    </div>
+    <textarea class="note-area" rows="10" placeholder="Wat speelt er? Wat wil je morgen onthouden?..."></textarea>
+  </div>
+</div>
+
+</main>
+
+<script>
+  // Datum
+  const d = new Date();
+  const days = ['Zondag','Maandag','Dinsdag','Woensdag','Donderdag','Vrijdag','Zaterdag'];
+  const months = ['januari','februari','maart','april','mei','juni','juli','augustus','september','oktober','november','december'];
+  const dateStr = `${days[d.getDay()]} ${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`;
+  ['datum','datum-gym','datum-opl','datum-deen'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = dateStr;
+  });
+
+  // Page navigation
+  function showPage(id, navEl) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById('page-' + id).classList.add('active');
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    navEl.classList.add('active');
+  }
+
+  // Tab navigation
+  function showTab(section, tab, btn) {
+    const prefix = section + '-';
+    document.querySelectorAll(`[id^="${prefix}"]`).forEach(el => el.classList.remove('active'));
+    document.getElementById(prefix + tab).classList.add('active');
+    btn.closest('.tabs').querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+
+  // Toggle task
+  function toggleTask(item) {
+    const check = item.querySelector('.task-check');
+    const text = item.querySelector('.task-text');
+    const isDone = check.classList.toggle('done');
+    text.classList.toggle('done', isDone);
+    check.textContent = isDone ? '✓' : '';
+  }
+
+  // Dash task
+  function addDashTask(e) { if (e.key === 'Enter') addDashTaskBtn(); }
+  function addDashTaskBtn() {
+    const input = document.getElementById('dash-task-input');
+    const val = input.value.trim();
+    if (!val) return;
+    const list = document.getElementById('dash-task-list');
+    const item = document.createElement('div');
+    item.className = 'task-item';
+    item.onclick = function() { toggleTask(this); };
+    item.innerHTML = `<div class="task-check"></div><div class="task-text">${val}</div><span class="task-tag tag-purple">Nieuw</span>`;
+    list.appendChild(item);
+    input.value = '';
+  }
+
+  // Energy
+  function selectEnergy(btn) {
+    btn.closest('.energy-row').querySelectorAll('.energy-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+  }
+
+  // Day toggle
+  function toggleDay(btn) {
+    btn.classList.toggle('active');
+  }
+
+  // Prayer toggle
+  function togglePrayer(btn) {
+    btn.classList.toggle('done');
+  }
+
+  // Quran tracker — 30 juz
+  const tracker = document.getElementById('quran-tracker');
+  if (tracker) {
+    for (let i = 1; i <= 30; i++) {
+      const box = document.createElement('div');
+      box.className = 'juz-box';
+      box.textContent = i;
+      if (i <= 8) box.classList.add('read');
+      if (i <= 2) box.classList.add('memorized');
+      box.addEventListener('click', () => {
+        if (!box.classList.contains('read')) {
+          box.classList.add('read');
+        } else if (!box.classList.contains('memorized')) {
+          box.classList.add('memorized');
+        } else {
+          box.classList.remove('read', 'memorized');
+        }
+      });
+      tracker.appendChild(box);
+    }
+  }
+</script>
+
+
+</body></html>
