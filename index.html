@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Al Nahari — Beheer Systeem</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #F2F5F2; --surface: #FFFFFF; --surface2: #F7FAF7; --border: #DDE8DD;
+  --sage: #5E8263; --sage-light: #EAF1EA; --sage-mid: #A4C0A8;
+  --teal: #3D7576; --teal-light: #E4EEEE;
+  --sand: #A6895A; --sand-light: #F4EDE0;
+  --rose: #8F5F5F; --rose-light: #F4EAEA;
+  --mawada: #6B5EA8; --mawada-light: #EDEAF8; --mawada-mid: #B0A8D8;
+  --text: #273328; --text-mid: #4A5E4A; --text-muted: #7A927A;
+  --shadow: 0 1px 3px rgba(39,51,40,.07); --shadow-md: 0 4px 16px rgba(39,51,40,.10);
+  --r: 10px;
+}
+body { background:var(--bg); color:var(--text); font-family:'Inter',sans-serif; font-size:14px; min-height:100vh; display:flex; flex-direction:column; }
+
+header { background:var(--surface); border-bottom:1px solid var(--border); height:56px; display:flex; align-items:center; justify-content:space-between; padding:0 22px; position:sticky; top:0; z-index:100; box-shadow:var(--shadow); }
+.logo { display:flex; align-items:center; gap:10px; }
+.logo-mark { width:32px; height:32px; background:var(--sage); border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:16px; }
+.logo-name { font-family:'Lora',serif; font-size:16px; font-weight:600; }
+.logo-sub { font-size:10px; color:var(--text-muted); }
+.header-right { display:flex; align-items:center; gap:10px; }
+.sync-btn { display:flex; align-items:center; gap:6px; background:var(--sage-light); border:1px solid var(--sage-mid); border-radius:20px; padding:4px 12px; font-size:12px; color:var(--sage); font-weight:500; cursor:pointer; transition:all .15s; }
+.sync-btn:hover { background:var(--sage); color:#fff; }
+.sync-dot { width:7px; height:7px; border-radius:50%; background:var(--sage); animation:blink 2s infinite; }
+.sync-dot.offline { background:#ccc; animation:none; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.35} }
+.user-chips { display:flex; gap:6px; }
+.user-chip { display:flex; align-items:center; gap:5px; background:var(--sage-light); border:1px solid var(--sage-mid); border-radius:20px; padding:3px 10px; font-size:12px; font-weight:500; color:var(--sage); cursor:pointer; }
+.user-chip.active { background:var(--sage); color:#fff; border-color:var(--sage); }
+
+.app { display:flex; flex:1; }
+nav { width:208px; background:var(--surface); border-right:1px solid var(--border); padding:16px 0; display:flex; flex-direction:column; flex-shrink:0; position:sticky; top:56px; height:calc(100vh - 56px); overflow-y:auto; }
+.nav-section-label { font-size:10px; font-weight:600; letter-spacing:.09em; text-transform:uppercase; color:var(--text-muted); padding:0 14px; margin:10px 0 3px; }
+.nav-item { display:flex; align-items:center; gap:8px; padding:8px 14px; cursor:pointer; border-left:3px solid transparent; font-size:13px; color:var(--text-mid); transition:all .15s; }
+.nav-item:hover { background:var(--sage-light); color:var(--sage); }
+.nav-item.active { background:var(--sage-light); color:var(--sage); border-left-color:var(--sage); font-weight:500; }
+.nav-item.mawada-nav:hover { background:var(--mawada-light); color:var(--mawada); }
+.nav-item.mawada-nav.active { background:var(--mawada-light); color:var(--mawada); border-left-color:var(--mawada); }
+.nav-icon { font-size:14px; width:18px; text-align:center; }
+.nav-divider { height:1px; background:var(--border); margin:8px 14px; }
+.nav-badge { margin-left:auto; background:var(--sage); color:#fff; border-radius:10px; padding:1px 6px; font-size:10px; font-weight:600; }
+.nav-badge.mawada { background:var(--mawada); }
+
+main { flex:1; padding:26px 24px; overflow-y:auto; min-width:0; }
+.page { display:none; }
+.page.active { display:block; }
+.page-header { margin-bottom:22px; }
+.page-title { font-family:'Lora',serif; font-size:21px; font-weight:600; margin-bottom:2px; }
+.page-title.mawada { color:var(--mawada); }
+.page-sub { font-size:12px; color:var(--text-muted); }
+
+.card { background:var(--surface); border:1px solid var(--border); border-radius:var(--r); box-shadow:var(--shadow); margin-bottom:16px; }
+.card-head { display:flex; align-items:center; justify-content:space-between; padding:15px 17px 0; }
+.card-title { font-family:'Lora',serif; font-size:15px; font-weight:600; }
+.card-body { padding:13px 17px 17px; }
+
+.tab-bar { display:flex; gap:2px; background:var(--surface2); border:1px solid var(--border); border-radius:8px; padding:3px; width:fit-content; margin-bottom:15px; }
+.tab { padding:5px 14px; border-radius:6px; font-size:13px; cursor:pointer; color:var(--text-muted); font-family:inherit; background:none; border:none; transition:all .15s; }
+.tab.active { background:var(--surface); color:var(--text); font-weight:500; box-shadow:var(--shadow); }
+
+.add-bar { display:flex; gap:7px; margin-bottom:13px; flex-wrap:wrap; }
+.add-input { flex:1; min-width:140px; padding:8px 11px; background:var(--surface2); border:1px solid var(--border); border-radius:8px; font-size:13px; font-family:inherit; color:var(--text); outline:none; }
+.add-input:focus { border-color:var(--sage-mid); }
+.add-select { padding:7px 10px; background:var(--surface2); border:1px solid var(--border); border-radius:8px; font-size:12px; font-family:inherit; color:var(--text); outline:none; }
+.add-btn { background:var(--sage); color:#fff; border:none; border-radius:8px; padding:8px 15px; font-size:13px; font-family:inherit; font-weight:500; cursor:pointer; white-space:nowrap; }
+.add-btn:hover { background:#4D6E52; }
+.add-btn.mawada { background:var(--mawada); }
+
+.task-list { display:flex; flex-direction:column; gap:7px; }
+.task-item { display:flex; align-items:flex-start; gap:9px; padding:10px 12px; background:var(--surface2); border:1px solid var(--border); border-radius:9px; transition:border-color .15s; }
+.task-item:hover { border-color:var(--sage-mid); }
+.task-item.done { opacity:.5; }
+.task-check { width:17px; height:17px; border-radius:4px; border:1.5px solid var(--sage-mid); flex-shrink:0; cursor:pointer; margin-top:1px; display:flex; align-items:center; justify-content:center; background:var(--surface); font-size:10px; color:#fff; }
+.task-check.checked { background:var(--sage); border-color:var(--sage); }
+.task-check.mawada-check.checked { background:var(--mawada); border-color:var(--mawada); }
+.task-body { flex:1; min-width:0; }
+.task-name { font-size:13px; font-weight:500; margin-bottom:3px; }
+.task-item.done .task-name { text-decoration:line-through; color:var(--text-muted); }
+.task-meta { display:flex; gap:6px; align-items:center; flex-wrap:wrap; }
+.task-date { font-size:11px; color:var(--text-muted); }
+.prio { font-size:10px; font-weight:600; border-radius:4px; padding:1px 6px; text-transform:uppercase; }
+.prio-high { background:var(--rose-light); color:var(--rose); }
+.prio-mid { background:var(--sand-light); color:var(--sand); }
+.prio-low { background:var(--sage-light); color:var(--sage); }
+.assignee-badge { font-size:10px; font-weight:600; border-radius:10px; padding:1px 7px; }
+.badge-fouaad { background:#EDE9FB; color:#6B5EA8; }
+.badge-nahari { background:var(--sage-light); color:var(--sage); }
+.task-del { background:none; border:none; font-size:12px; cursor:pointer; color:var(--text-muted); padding:0 3px; opacity:0; }
+.task-item:hover .task-del { opacity:1; }
+
+.goal-list { display:flex; flex-direction:column; gap:9px; }
+.goal-item { padding:12px; background:var(--surface2); border:1px solid var(--border); border-radius:9px; }
+.goal-top { display:flex; align-items:center; justify-content:space-between; margin-bottom:7px; }
+.goal-name { font-weight:600; font-size:13px; }
+.goal-pct { font-size:12px; font-weight:600; color:var(--teal); }
+.goal-pct.mawada { color:var(--mawada); }
+.goal-bar { height:5px; background:var(--border); border-radius:3px; overflow:hidden; margin-bottom:7px; }
+.goal-fill { height:100%; background:linear-gradient(90deg,var(--teal),#5FAAAC); border-radius:3px; transition:width .4s; }
+.goal-fill.mawada { background:linear-gradient(90deg,var(--mawada),#9B8ED4); }
+.goal-bottom { display:flex; align-items:center; justify-content:space-between; }
+.goal-desc { font-size:11px; color:var(--text-muted); flex:1; }
+.goal-actions { display:flex; align-items:center; gap:6px; }
+
+.event-list { display:flex; flex-direction:column; gap:7px; }
+.event-item { display:flex; gap:11px; align-items:flex-start; padding:11px 13px; background:var(--surface2); border:1px solid var(--border); border-radius:9px; }
+.event-date-box { text-align:center; flex-shrink:0; width:38px; }
+.event-day { font-family:'Lora',serif; font-size:20px; font-weight:600; color:var(--teal); line-height:1; }
+.event-month { font-size:9px; color:var(--text-muted); text-transform:uppercase; font-weight:600; }
+.event-info { flex:1; }
+.event-name { font-weight:600; font-size:13px; margin-bottom:2px; }
+.event-desc { font-size:11px; color:var(--text-muted); }
+.event-tag { font-size:10px; font-weight:600; border-radius:5px; padding:2px 7px; text-transform:uppercase; height:fit-content; flex-shrink:0; }
+.et-weekly { background:var(--sage-light); color:var(--sage); }
+.et-intern { background:var(--teal-light); color:var(--teal); }
+.et-public { background:var(--sand-light); color:var(--sand); }
+.et-mawada { background:var(--mawada-light); color:var(--mawada); }
+
+.project-list { display:flex; flex-direction:column; gap:9px; }
+.proj-item { padding:13px; background:var(--surface2); border:1px solid var(--border); border-radius:9px; }
+.proj-top { display:flex; align-items:center; justify-content:space-between; margin-bottom:9px; }
+.proj-name { font-weight:600; font-size:13px; }
+.proj-tag { font-size:10px; font-weight:600; border-radius:5px; padding:2px 7px; text-transform:uppercase; }
+.pt-active { background:var(--sage-light); color:var(--sage); }
+.pt-plan { background:var(--teal-light); color:var(--teal); }
+.pt-review { background:var(--sand-light); color:var(--sand); }
+.proj-bar { height:5px; background:var(--border); border-radius:3px; overflow:hidden; margin-bottom:7px; }
+.proj-fill { height:100%; background:var(--sage); border-radius:3px; }
+.proj-fill.mawada { background:var(--mawada); }
+.proj-bottom { display:flex; justify-content:space-between; font-size:11px; color:var(--text-muted); }
+
+.stats-row { display:grid; grid-template-columns:repeat(4,1fr); gap:13px; margin-bottom:18px; }
+.stat-card { background:var(--surface); border:1px solid var(--border); border-radius:var(--r); padding:15px; box-shadow:var(--shadow); }
+.stat-icon { font-size:18px; margin-bottom:9px; }
+.stat-val { font-family:'Lora',serif; font-size:24px; font-weight:600; margin-bottom:2px; }
+.stat-label { font-size:11px; color:var(--text-muted); }
+.dash-grid { display:grid; grid-template-columns:1fr 1fr; gap:15px; }
+.dash-grid-3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:15px; margin-top:15px; }
+.mawada-section-bar { height:3px; background:linear-gradient(90deg,var(--mawada),var(--mawada-mid)); border-radius:2px; margin-bottom:18px; }
+
+.empty { text-align:center; padding:26px 14px; color:var(--text-muted); font-size:13px; }
+.empty-icon { font-size:26px; margin-bottom:7px; }
+
+.bot-banner { background:linear-gradient(135deg,var(--sage-light),var(--teal-light)); border:1px solid var(--sage-mid); border-radius:var(--r); padding:14px 18px; margin-bottom:18px; display:flex; align-items:center; gap:12px; font-size:13px; }
+.bot-banner-icon { font-size:22px; }
+.bot-banner-text { flex:1; }
+.bot-banner-title { font-weight:600; margin-bottom:2px; }
+.bot-banner-sub { font-size:11px; color:var(--text-muted); }
+
+.toast { position:fixed; bottom:22px; right:22px; background:var(--text); color:#fff; border-radius:9px; padding:9px 16px; font-size:13px; z-index:999; opacity:0; transform:translateY(8px); transition:all .2s; pointer-events:none; }
+.toast.show { opacity:1; transform:translateY(0); }
+::-webkit-scrollbar { width:5px; }
+::-webkit-scrollbar-thumb { background:var(--border); border-radius:3px; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-mark">🕌</div>
+    <div>
+      <div class="logo-name">Al Nahari Moskee</div>
+      <div class="logo-sub">Beheer &amp; Planning</div>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="sync-btn" onclick="syncData()" id="sync-btn">
+      <div class="sync-dot" id="sync-dot"></div>
+      <span id="sync-label">Live sync</span>
+    </div>
+    <div class="user-chips">
+      <div class="user-chip active" id="chip-fouaad" onclick="switchUser('Fouaad')">👤 Fouaad</div>
+      <div class="user-chip" id="chip-nahari" onclick="switchUser('Nahari')">👤 Nahari</div>
+    </div>
+  </div>
+</header>
+
+<div class="app">
+<nav>
+  <div class="nav-section-label">Overzicht</div>
+  <div class="nav-item active" onclick="showPage('dashboard',this)"><span class="nav-icon">⊞</span> Dashboard</div>
+  <div class="nav-divider"></div>
+  <div class="nav-section-label">Moskee</div>
+  <div class="nav-item" onclick="showPage('planning',this)"><span class="nav-icon">📅</span> Planning <span class="nav-badge" id="badge-events">0</span></div>
+  <div class="nav-item" onclick="showPage('taken',this)"><span class="nav-icon">✅</span> Taken <span class="nav-badge" id="badge-tasks">0</span></div>
+  <div class="nav-item" onclick="showPage('doelen',this)"><span class="nav-icon">🎯</span> Doelen</div>
+  <div class="nav-item" onclick="showPage('projecten',this)"><span class="nav-icon">📁</span> Projecten</div>
+  <div class="nav-item" onclick="showPage('dawah',this)"><span class="nav-icon">📢</span> Dawah</div>
+  <div class="nav-item" onclick="showPage('ideeen',this)"><span class="nav-icon">💡</span> Ideeën</div>
+  <div class="nav-divider"></div>
+  <div class="nav-section-label">Stichting Mawada</div>
+  <div class="nav-item mawada-nav" onclick="showPage('mawada-taken',this)"><span class="nav-icon">✅</span> Taken <span class="nav-badge mawada" id="badge-mawada-tasks">0</span></div>
+  <div class="nav-item mawada-nav" onclick="showPage('mawada-doelen',this)"><span class="nav-icon">🎯</span> Doelen</div>
+  <div class="nav-item mawada-nav" onclick="showPage('mawada-projecten',this)"><span class="nav-icon">📁</span> Projecten</div>
+</nav>
+
+<main>
+
+<!-- DASHBOARD -->
+<div id="page-dashboard" class="page active">
+  <div class="page-header">
+    <div class="page-title" id="dash-greeting">Goedemorgen 🌿</div>
+    <div class="page-sub" id="dash-date"></div>
+  </div>
+  <div class="bot-banner">
+    <div class="bot-banner-icon">🤖</div>
+    <div class="bot-banner-text">
+      <div class="bot-banner-title">Telegram Bot actief — @moskee_bot</div>
+      <div class="bot-banner-sub">Stuur een bericht via Telegram en het verschijnt hier automatisch</div>
+    </div>
+    <div class="sync-btn" onclick="syncData()" style="margin:0">🔄 Vernieuwen</div>
+  </div>
+  <div class="stats-row">
+    <div class="stat-card"><div class="stat-icon">✅</div><div class="stat-val" id="stat-taken">0</div><div class="stat-label">Open taken moskee</div></div>
+    <div class="stat-card"><div class="stat-icon">📅</div><div class="stat-val" id="stat-events">0</div><div class="stat-label">Evenementen</div></div>
+    <div class="stat-card"><div class="stat-icon">📁</div><div class="stat-val" id="stat-projs">0</div><div class="stat-label">Actieve projecten</div></div>
+    <div class="stat-card"><div class="stat-icon" style="color:var(--mawada)">🏛</div><div class="stat-val" id="stat-mawada" style="color:var(--mawada)">0</div><div class="stat-label">Open taken Mawada</div></div>
+  </div>
+  <div class="dash-grid">
+    <div class="card"><div class="card-head"><div class="card-title">📅 Eerstvolgende</div></div><div class="card-body" id="dash-events-preview"></div></div>
+    <div class="card"><div class="card-head"><div class="card-title">✅ Mijn taken</div></div><div class="card-body" id="dash-tasks-preview"></div></div>
+  </div>
+  <div class="dash-grid-3">
+    <div class="card"><div class="card-head"><div class="card-title">📁 Projecten</div></div><div class="card-body" id="dash-projs-preview"></div></div>
+    <div class="card"><div class="card-head"><div class="card-title" style="color:var(--mawada)">🏛 Mawada taken</div></div><div class="card-body" id="dash-mawada-preview"></div></div>
+    <div class="card"><div class="card-head"><div class="card-title">💡 Ideeën</div></div><div class="card-body" id="dash-ideas-preview"></div></div>
+  </div>
+</div>
+
+<!-- PLANNING -->
+<div id="page-planning" class="page">
+  <div class="page-header"><div class="page-title">📅 Planning</div><div class="page-sub">Evenementen via Telegram of handmatig toevoegen</div></div>
+  <div class="add-bar">
+    <input class="add-input" id="ev-name" placeholder="Naam evenement…">
+    <input class="add-select" type="date" id="ev-date">
+    <input class="add-input" style="max-width:90px" id="ev-time" placeholder="13:30">
+    <select class="add-select" id="ev-type"><option value="weekly">Wekelijks</option><option value="intern">Intern</option><option value="public">Publiek</option><option value="mawada">Mawada</option></select>
+    <button class="add-btn" onclick="addEvent()">+ Voeg toe</button>
+  </div>
+  <div class="event-list" id="event-list"></div>
+</div>
+
+<!-- TAKEN MOSKEE -->
+<div id="page-taken" class="page">
+  <div class="page-header"><div class="page-title">✅ Taken — Moskee</div><div class="page-sub">Via Telegram of handmatig toevoegen</div></div>
+  <div class="add-bar">
+    <input class="add-input" id="t-name" placeholder="Nieuwe taak…">
+    <select class="add-select" id="t-prio"><option value="high">🔴 Hoog</option><option value="mid" selected>🟡 Midden</option><option value="low">🟢 Laag</option></select>
+    <select class="add-select" id="t-person"><option value="Fouaad">Fouaad</option><option value="Nahari">Nahari</option><option value="Beiden">Beiden</option></select>
+    <input class="add-select" type="date" id="t-date">
+    <button class="add-btn" onclick="addTask('moskee')">+ Voeg toe</button>
+  </div>
+  <div class="tab-bar">
+    <button class="tab active" onclick="filterTasks('moskee','alle',this)">Alle</button>
+    <button class="tab" onclick="filterTasks('moskee','Fouaad',this)">Fouaad</button>
+    <button class="tab" onclick="filterTasks('moskee','Nahari',this)">Nahari</button>
+    <button class="tab" onclick="filterTasks('moskee','open',this)">Open</button>
+  </div>
+  <div class="task-list" id="task-list-moskee"></div>
+</div>
+
+<!-- DOELEN MOSKEE -->
+<div id="page-doelen" class="page">
+  <div class="page-header"><div class="page-title">🎯 Doelen — Moskee</div></div>
+  <div class="add-bar">
+    <input class="add-input" id="g-name" placeholder="Doel omschrijving…">
+    <input class="add-input" style="max-width:200px" id="g-desc" placeholder="Toelichting…">
+    <button class="add-btn" onclick="addGoal('moskee')">+ Voeg toe</button>
+  </div>
+  <div class="goal-list" id="goal-list-moskee"></div>
+</div>
+
+<!-- PROJECTEN MOSKEE -->
+<div id="page-projecten" class="page">
+  <div class="page-header"><div class="page-title">📁 Projecten — Moskee</div></div>
+  <div class="add-bar">
+    <input class="add-input" id="p-name" placeholder="Projectnaam…">
+    <select class="add-select" id="p-status"><option value="active">Actief</option><option value="plan">Planning</option><option value="review">Review</option></select>
+    <input class="add-select" type="date" id="p-deadline">
+    <select class="add-select" id="p-person"><option value="Fouaad">Fouaad</option><option value="Nahari">Nahari</option><option value="Beiden">Beiden</option></select>
+    <button class="add-btn" onclick="addProject('moskee')">+ Voeg toe</button>
+  </div>
+  <div class="project-list" id="project-list-moskee"></div>
+</div>
+
+<!-- DAWAH -->
+<div id="page-dawah" class="page">
+  <div class="page-header"><div class="page-title">📢 Dawah</div></div>
+  <div class="add-bar">
+    <input class="add-input" id="dw-name" placeholder="Dawah taak…">
+    <select class="add-select" id="dw-prio"><option value="high">🔴 Hoog</option><option value="mid" selected>🟡 Midden</option><option value="low">🟢 Laag</option></select>
+    <select class="add-select" id="dw-person"><option value="Fouaad">Fouaad</option><option value="Nahari">Nahari</option><option value="Beiden">Beiden</option></select>
+    <button class="add-btn" onclick="addTask('dawah')">+ Voeg toe</button>
+  </div>
+  <div class="task-list" id="task-list-dawah"></div>
+</div>
+
+<!-- IDEEËN -->
+<div id="page-ideeen" class="page">
+  <div class="page-header"><div class="page-title">💡 Ideeën</div><div class="page-sub">Ideeën via Telegram of handmatig</div></div>
+  <div class="add-bar">
+    <input class="add-input" id="idea-name" placeholder="Idee omschrijving…">
+    <input class="add-input" style="max-width:200px" id="idea-desc" placeholder="Toelichting…">
+    <button class="add-btn" onclick="addIdea()">+ Voeg toe</button>
+  </div>
+  <div id="ideas-list"></div>
+</div>
+
+<!-- MAWADA TAKEN -->
+<div id="page-mawada-taken" class="page">
+  <div class="page-header"><div class="page-title mawada">✅ Taken — Stichting Mawada</div></div>
+  <div class="mawada-section-bar"></div>
+  <div class="add-bar">
+    <input class="add-input" id="mt-name" placeholder="Nieuwe taak Mawada…">
+    <select class="add-select" id="mt-prio"><option value="high">🔴 Hoog</option><option value="mid" selected>🟡 Midden</option><option value="low">🟢 Laag</option></select>
+    <select class="add-select" id="mt-person"><option value="Fouaad">Fouaad</option><option value="Nahari">Nahari</option><option value="Beiden">Beiden</option></select>
+    <input class="add-select" type="date" id="mt-date">
+    <button class="add-btn mawada" onclick="addTask('mawada')">+ Voeg toe</button>
+  </div>
+  <div class="tab-bar">
+    <button class="tab active" onclick="filterTasks('mawada','alle',this)">Alle</button>
+    <button class="tab" onclick="filterTasks('mawada','Fouaad',this)">Fouaad</button>
+    <button class="tab" onclick="filterTasks('mawada','Nahari',this)">Nahari</button>
+    <button class="tab" onclick="filterTasks('mawada','open',this)">Open</button>
+  </div>
+  <div class="task-list" id="task-list-mawada"></div>
+</div>
+
+<!-- MAWADA DOELEN -->
+<div id="page-mawada-doelen" class="page">
+  <div class="page-header"><div class="page-title mawada">🎯 Doelen — Stichting Mawada</div></div>
+  <div class="mawada-section-bar"></div>
+  <div class="add-bar">
+    <input class="add-input" id="mg-name" placeholder="Doel omschrijving…">
+    <input class="add-input" style="max-width:200px" id="mg-desc" placeholder="Toelichting…">
+    <button class="add-btn mawada" onclick="addGoal('mawada')">+ Voeg toe</button>
+  </div>
+  <div class="goal-list" id="goal-list-mawada"></div>
+</div>
+
+<!-- MAWADA PROJECTEN -->
+<div id="page-mawada-projecten" class="page">
+  <div class="page-header"><div class="page-title mawada">📁 Projecten — Stichting Mawada</div></div>
+  <div class="mawada-section-bar"></div>
+  <div class="add-bar">
+    <input class="add-input" id="mp-name" placeholder="Projectnaam…">
+    <select class="add-select" id="mp-status"><option value="active">Actief</option><option value="plan">Planning</option><option value="review">Review</option></select>
+    <input class="add-select" type="date" id="mp-deadline">
+    <select class="add-select" id="mp-person"><option value="Fouaad">Fouaad</option><option value="Nahari">Nahari</option><option value="Beiden">Beiden</option></select>
+    <button class="add-btn mawada" onclick="addProject('mawada')">+ Voeg toe</button>
+  </div>
+  <div class="project-list" id="project-list-mawada"></div>
+</div>
+
+</main>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const BOT_URL = "https://alnaharibot-production.up.railway.app/data";
+const DELETE_URL = "https://alnaharibot-production.up.railway.app/delete";
+const MONTHS = ['','jan','feb','mrt','apr','mei','jun','jul','aug','sep','okt','nov','dec'];
+
+let S = null;
+let activeUser = 'Fouaad';
+let taskFilters = { moskee:'alle', mawada:'alle', dawah:'alle' };
+let idCounter = 500;
+let syncInterval;
+
+// ── SYNC ────────────────────────────────────────────────
+async function syncData() {
+  document.getElementById('sync-label').textContent = 'Laden…';
+  try {
+    const res = await fetch(BOT_URL + '?t=' + Date.now());
+    if (!res.ok) throw new Error('Server niet bereikbaar');
+    const botData = await res.json();
+
+    // Merge bot data met lokale data
+    if (!S) S = defaultState();
+
+    // Bot data overschrijft lokale data voor items die via bot binnenkomen
+    mergeData(botData);
+
+    document.getElementById('sync-dot').className = 'sync-dot';
+    document.getElementById('sync-label').textContent = 'Live sync';
+    renderCurrentPage();
+    toast('Dashboard bijgewerkt ✅');
+  } catch(e) {
+    document.getElementById('sync-dot').className = 'sync-dot offline';
+    document.getElementById('sync-label').textContent = 'Offline';
+    if (!S) S = defaultState();
+    renderCurrentPage();
+  }
+}
+
+function mergeData(botData) {
+  // Voeg bot items toe die nog niet lokaal staan
+  ['moskee','mawada','dawah'].forEach(section => {
+    const botTasks = botData.tasks?.[section] || [];
+    const localTasks = S.tasks[section] || [];
+    const localIds = new Set(localTasks.map(t => t.id));
+    botTasks.forEach(t => { if (!localIds.has(t.id)) S.tasks[section].unshift(t); });
+  });
+
+  const botEvents = botData.events || [];
+  const localEventIds = new Set(S.events.map(e => e.id));
+  botEvents.forEach(e => { if (!localEventIds.has(e.id)) S.events.unshift(e); });
+
+  ['moskee','mawada'].forEach(section => {
+    const botProjs = botData.projects?.[section] || [];
+    const localProjs = S.projects[section] || [];
+    const localIds = new Set(localProjs.map(p => p.id));
+    botProjs.forEach(p => { if (!localIds.has(p.id)) S.projects[section].push(p); });
+
+    const botGoals = botData.goals?.[section] || [];
+    const localGoals = S.goals[section] || [];
+    const localGIds = new Set(localGoals.map(g => g.id));
+    botGoals.forEach(g => { if (!localGIds.has(g.id)) S.goals[section].unshift(g); });
+  });
+
+  const botIdeas = botData.ideas || [];
+  const localIdeaIds = new Set(S.ideas.map(i => i.id));
+  botIdeas.forEach(i => { if (!localIdeaIds.has(i.id)) S.ideas.unshift(i); });
+}
+
+function defaultState() {
+  return {
+    tasks: { moskee:[], mawada:[], dawah:[] },
+    events: [], ideas: [],
+    projects: { moskee:[], mawada:[] },
+    goals: { moskee:[], mawada:[] }
+  };
+}
+
+// ── NAVIGATION ───────────────────────────────────────────
+let currentPage = 'dashboard';
+function showPage(id, el) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  if (el) el.classList.add('active');
+  currentPage = id;
+  renderPage(id);
+}
+
+function renderCurrentPage() { renderPage(currentPage); }
+
+function renderPage(id) {
+  if (!S) return;
+  if (id==='dashboard') renderDashboard();
+  if (id==='planning') renderEvents();
+  if (id==='taken') renderTasks('moskee');
+  if (id==='doelen') renderGoals('moskee');
+  if (id==='projecten') renderProjects('moskee');
+  if (id==='dawah') renderTasks('dawah');
+  if (id==='ideeen') renderIdeas();
+  if (id==='mawada-taken') renderTasks('mawada');
+  if (id==='mawada-doelen') renderGoals('mawada');
+  if (id==='mawada-projecten') renderProjects('mawada');
+  updateBadges();
+}
+
+function switchUser(name) {
+  activeUser = name;
+  document.getElementById('chip-fouaad').className = 'user-chip'+(name==='Fouaad'?' active':'');
+  document.getElementById('chip-nahari').className = 'user-chip'+(name==='Nahari'?' active':'');
+  renderDashboard();
+  toast('Ingelogd als '+name);
+}
+
+// ── DASHBOARD ────────────────────────────────────────────
+function renderDashboard() {
+  const h = new Date().getHours();
+  const greet = h<12?'Goedemorgen':h<18?'Goedemiddag':'Goedenavond';
+  const icon = h<12?'🌤':h<18?'🌿':'🌙';
+  document.getElementById('dash-greeting').textContent = greet+', '+activeUser+' '+icon;
+  document.getElementById('dash-date').textContent = new Date().toLocaleDateString('nl-NL',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+
+  document.getElementById('stat-taken').textContent = S.tasks.moskee.filter(t=>!t.done).length;
+  document.getElementById('stat-events').textContent = S.events.length;
+  document.getElementById('stat-projs').textContent = [...S.projects.moskee,...S.projects.mawada].filter(p=>p.status==='active').length;
+  document.getElementById('stat-mawada').textContent = S.tasks.mawada.filter(t=>!t.done).length;
+
+  const evEl = document.getElementById('dash-events-preview');
+  const evs = [...S.events].sort((a,b)=>a.date.localeCompare(b.date)).slice(0,3);
+  evEl.innerHTML = evs.length ? evs.map(e=>`
+    <div class="event-item" style="margin-bottom:6px">
+      <div class="event-date-box"><div class="event-day">${e.date.split('-')[2]}</div><div class="event-month">${MONTHS[+e.date.split('-')[1]]}</div></div>
+      <div class="event-info"><div class="event-name">${e.name}</div><div class="event-desc">${e.time||''}${e.desc?' · '+e.desc:''}</div></div>
+      <div class="event-tag et-${e.type}">${typeLabel(e.type)}</div>
+    </div>`).join('') : '<div class="empty"><div class="empty-icon">📅</div>Nog geen evenementen</div>';
+
+  const tEl = document.getElementById('dash-tasks-preview');
+  const myTasks = [...S.tasks.moskee,...S.tasks.dawah].filter(t=>!t.done&&(t.person===activeUser||t.person==='Beiden')).slice(0,4);
+  tEl.innerHTML = myTasks.length ? myTasks.map(t=>`
+    <div class="task-item" style="margin-bottom:6px">
+      <div class="task-body"><div class="task-name">${t.name}</div>
+      <div class="task-meta">${t.date?`<span class="task-date">${t.date}</span>`:''}<span class="prio prio-${t.prio}">${{high:'Hoog',mid:'Midden',low:'Laag'}[t.prio]}</span></div></div>
+    </div>`).join('') : '<div class="empty"><div class="empty-icon">✅</div>Geen open taken voor jou</div>';
+
+  const pEl = document.getElementById('dash-projs-preview');
+  pEl.innerHTML = S.projects.moskee.slice(0,3).map(p=>`
+    <div style="margin-bottom:9px">
+      <div style="display:flex;justify-content:space-between;font-size:12px;font-weight:500;margin-bottom:4px"><span>${p.name}</span><span class="proj-tag pt-${p.status}">${{active:'Actief',plan:'Planning',review:'Review'}[p.status]}</span></div>
+      <div class="proj-bar"><div class="proj-fill" style="width:${p.pct}%"></div></div>
+    </div>`).join('') || '<div class="empty"><div class="empty-icon">📁</div>Geen projecten</div>';
+
+  const mEl = document.getElementById('dash-mawada-preview');
+  mEl.innerHTML = S.tasks.mawada.filter(t=>!t.done).slice(0,3).map(t=>`
+    <div class="task-item" style="margin-bottom:6px">
+      <div class="task-body"><div class="task-name">${t.name}</div></div>
+    </div>`).join('') || '<div class="empty"><div class="empty-icon">✅</div>Geen open taken</div>';
+
+  const iEl = document.getElementById('dash-ideas-preview');
+  iEl.innerHTML = S.ideas.slice(0,3).map(i=>`
+    <div style="padding:8px 10px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;margin-bottom:6px;font-size:12px">
+      <div style="font-weight:500">💡 ${i.name}</div>
+      ${i.desc?`<div style="color:var(--text-muted);margin-top:2px">${i.desc}</div>`:''}
+    </div>`).join('') || '<div class="empty"><div class="empty-icon">💡</div>Geen ideeën</div>';
+}
+
+function updateBadges() {
+  document.getElementById('badge-tasks').textContent = S.tasks.moskee.filter(t=>!t.done).length;
+  document.getElementById('badge-mawada-tasks').textContent = S.tasks.mawada.filter(t=>!t.done).length;
+  document.getElementById('badge-events').textContent = S.events.length;
+}
+
+// ── RENDER FUNCTIONS ─────────────────────────────────────
+function renderEvents() {
+  const el = document.getElementById('event-list'); if(!el) return;
+  const sorted = [...S.events].sort((a,b)=>a.date.localeCompare(b.date));
+  el.innerHTML = sorted.length ? sorted.map(e=>`
+    <div class="event-item">
+      <div class="event-date-box"><div class="event-day">${e.date.split('-')[2]}</div><div class="event-month">${MONTHS[+e.date.split('-')[1]]}</div></div>
+      <div class="event-info"><div class="event-name">${e.name}</div><div class="event-desc">${e.time||''}${e.desc?' · '+e.desc:''}</div></div>
+      <div class="event-tag et-${e.type}">${typeLabel(e.type)}</div>
+      <button style="background:none;border:none;font-size:12px;cursor:pointer;color:var(--text-muted);margin-left:8px;opacity:0.5" onclick="deleteEvent(${e.id})">✕</button>
+    </div>`).join('') : '<div class="empty"><div class="empty-icon">📅</div>Nog geen evenementen. Stuur een bericht via Telegram!</div>';
+}
+
+function renderTasks(group) {
+  const listId = {moskee:'task-list-moskee',mawada:'task-list-mawada',dawah:'task-list-dawah'}[group];
+  const el = document.getElementById(listId); if(!el) return;
+  const isMw = group==='mawada';
+  let tasks = S.tasks[group]||[];
+  const f = taskFilters[group]||'alle';
+  if(f==='Fouaad') tasks=tasks.filter(t=>t.person==='Fouaad'||t.person==='Beiden');
+  if(f==='Nahari') tasks=tasks.filter(t=>t.person==='Nahari'||t.person==='Beiden');
+  if(f==='open') tasks=tasks.filter(t=>!t.done);
+  el.innerHTML = tasks.length ? tasks.map(t=>`
+    <div class="task-item ${t.done?'done':''}">
+      <div class="task-check ${isMw?'mawada-check':''} ${t.done?'checked':''}" onclick="toggleTask('${group}',${t.id})">${t.done?'✓':''}</div>
+      <div class="task-body">
+        <div class="task-name">${t.name}</div>
+        <div class="task-meta">
+          ${t.date?`<span class="task-date">📅 ${t.date}</span>`:''}
+          <span class="prio prio-${t.prio}">${{high:'Hoog',mid:'Midden',low:'Laag'}[t.prio]}</span>
+          ${t.person?`<span class="assignee-badge badge-${t.person==='Nahari'?'nahari':'fouaad'}">${t.person}</span>`:''}
+        </div>
+      </div>
+      <button class="task-del" onclick="deleteTask('${group}',${t.id})">✕</button>
+    </div>`).join('') : '<div class="empty"><div class="empty-icon">✅</div>Geen taken. Voeg er een toe of stuur via Telegram!</div>';
+}
+
+function renderGoals(group) {
+  const listId = group==='moskee'?'goal-list-moskee':'goal-list-mawada';
+  const el = document.getElementById(listId); if(!el) return;
+  const isMw = group==='mawada';
+  el.innerHTML = (S.goals[group]||[]).map(g=>`
+    <div class="goal-item">
+      <div class="goal-top"><div class="goal-name">${g.name}</div><div class="goal-pct ${isMw?'mawada':''}">${g.pct}%</div></div>
+      <div class="goal-bar"><div class="goal-fill ${isMw?'mawada':''}" style="width:${g.pct}%"></div></div>
+      <div class="goal-bottom">
+        <div class="goal-desc">${g.desc||''}</div>
+        <div class="goal-actions">
+          <input type="range" min="0" max="100" value="${g.pct}" style="width:72px;accent-color:var(${isMw?'--mawada':'--teal'})" oninput="updateGoalPct('${group}',${g.id},this.value)">
+          <button style="background:none;border:none;font-size:11px;cursor:pointer;color:var(--text-muted)" onclick="deleteGoal('${group}',${g.id})">✕</button>
+        </div>
+      </div>
+    </div>`).join('') || '<div class="empty"><div class="empty-icon">🎯</div>Nog geen doelen.</div>';
+}
+
+function renderProjects(group) {
+  const listId = group==='moskee'?'project-list-moskee':'project-list-mawada';
+  const el = document.getElementById(listId); if(!el) return;
+  const isMw = group==='mawada';
+  el.innerHTML = (S.projects[group]||[]).map(p=>`
+    <div class="proj-item">
+      <div class="proj-top"><div class="proj-name">${p.name}</div><div class="proj-tag pt-${p.status}">${{active:'Actief',plan:'Planning',review:'Review'}[p.status]}</div></div>
+      <div class="proj-bar"><div class="proj-fill ${isMw?'mawada':''}" style="width:${p.pct}%"></div></div>
+      <div class="proj-bottom">
+        <span>${p.pct}% · ${p.person||''}</span>
+        <span style="display:flex;align-items:center;gap:8px">
+          ${p.deadline?'Deadline: '+p.deadline:''}
+          <input type="range" min="0" max="100" value="${p.pct}" style="width:60px;accent-color:var(${isMw?'--mawada':'--sage'})" oninput="updateProjectPct('${group}',${p.id},this.value)">
+          <button style="background:none;border:none;font-size:11px;cursor:pointer;color:var(--text-muted)" onclick="deleteProject('${group}',${p.id})">✕</button>
+        </span>
+      </div>
+    </div>`).join('') || '<div class="empty"><div class="empty-icon">📁</div>Nog geen projecten.</div>';
+}
+
+function renderIdeas() {
+  const el = document.getElementById('ideas-list'); if(!el) return;
+  el.innerHTML = (S.ideas||[]).map(i=>`
+    <div style="padding:12px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:9px;margin-bottom:8px">
+      <div style="font-weight:600;margin-bottom:4px">💡 ${i.name}</div>
+      ${i.desc?`<div style="font-size:12px;color:var(--text-muted)">${i.desc}</div>`:''}
+      <div style="font-size:11px;color:var(--text-muted);margin-top:6px">${i.date||''} ${i.person?'· '+i.person:''} · ${i.section||'moskee'}</div>
+    </div>`).join('') || '<div class="empty"><div class="empty-icon">💡</div>Nog geen ideeën. Stuur een idee via Telegram!</div>';
+}
+
+// ── ACTIONS ───────────────────────────────────────────────
+function addTask(group) {
+  const ids = {moskee:['t-name','t-prio','t-person','t-date'],mawada:['mt-name','mt-prio','mt-person','mt-date'],dawah:['dw-name','dw-prio','dw-person',null]};
+  const [nId,pId,peId,dId] = ids[group];
+  const name = v(nId); if(!name){toast('Vul een taaknaam in');return;}
+  S.tasks[group].unshift({id:++idCounter,name,prio:v(pId)||'mid',person:v(peId)||'Beiden',date:dId?v(dId):'',done:false});
+  c(nId,''); if(dId) c(dId,'');
+  renderTasks(group); updateBadges(); toast('Taak toegevoegd');
+}
+
+function toggleTask(group,id) {
+  const t=S.tasks[group]?.find(x=>x.id===id);
+  if(t){t.done=!t.done;renderTasks(group);updateBadges();}
+}
+
+async function deleteFromServer(type, section, id) {
+  try {
+    await fetch(BOT_URL.replace('/data','') + '/delete', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({type, section, id})
+    });
+  } catch(e) { console.log('Server delete fout:', e); }
+}
+
+function deleteTask(group,id) {
+  S.tasks[group]=S.tasks[group].filter(x=>x.id!==id);
+  deleteFromServer('task', group, id);
+  renderTasks(group);updateBadges();toast('Taak verwijderd');
+}
+
+function filterTasks(group,filter,btn) {
+  taskFilters[group]=filter;
+  btn.closest('.tab-bar').querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  renderTasks(group);
+}
+
+function addGoal(group) {
+  const ids={moskee:['g-name','g-desc'],mawada:['mg-name','mg-desc']}[group];
+  const name=v(ids[0]);if(!name){toast('Vul een doel in');return;}
+  S.goals[group].unshift({id:++idCounter,name,desc:v(ids[1])||'',pct:0});
+  c(ids[0],'');c(ids[1],'');renderGoals(group);toast('Doel toegevoegd');
+}
+
+function updateGoalPct(group,id,val) {
+  const g=S.goals[group]?.find(x=>x.id===id);
+  if(g){g.pct=+val;renderGoals(group);}
+}
+
+function deleteGoal(group,id) {
+  S.goals[group]=S.goals[group].filter(x=>x.id!==id);
+  deleteFromServer('goal', group, id);
+  renderGoals(group);toast('Doel verwijderd');
+}
+
+function addEvent() {
+  const name=v('ev-name');const date=v('ev-date');
+  if(!name||!date){toast('Vul naam en datum in');return;}
+  S.events.push({id:++idCounter,name,date,time:v('ev-time')||'',type:v('ev-type')||'intern',desc:''});
+  c('ev-name','');c('ev-date','');c('ev-time','');
+  renderEvents();updateBadges();toast('Evenement toegevoegd');
+}
+
+function deleteEvent(id) {
+  S.events=S.events.filter(x=>x.id!==id);
+  deleteFromServer('event', 'moskee', id);
+  renderEvents();updateBadges();toast('Evenement verwijderd');
+}
+
+function addProject(group) {
+  const ids={moskee:['p-name','p-status','p-deadline','p-person'],mawada:['mp-name','mp-status','mp-deadline','mp-person']}[group];
+  const name=v(ids[0]);if(!name){toast('Vul een projectnaam in');return;}
+  S.projects[group].push({id:++idCounter,name,status:v(ids[1])||'plan',pct:0,deadline:v(ids[2])||'',person:v(ids[3])||'Beiden'});
+  c(ids[0],'');c(ids[2],'');renderProjects(group);toast('Project toegevoegd');
+}
+
+function updateProjectPct(group,id,val) {
+  const p=S.projects[group]?.find(x=>x.id===id);
+  if(p){p.pct=+val;renderProjects(group);}
+}
+
+function deleteProject(group,id) {
+  S.projects[group]=S.projects[group].filter(x=>x.id!==id);
+  deleteFromServer('project', group, id);
+  renderProjects(group);toast('Project verwijderd');
+}
+
+function addIdea() {
+  const name=v('idea-name');if(!name){toast('Vul een idee in');return;}
+  S.ideas.unshift({id:++idCounter,name,desc:v('idea-desc')||'',person:activeUser,date:new Date().toISOString().split('T')[0],section:'moskee'});
+  c('idea-name','');c('idea-desc','');renderIdeas();toast('Idee toegevoegd');
+}
+
+function typeLabel(t){return{weekly:'Wekelijks',intern:'Intern',public:'Publiek',mawada:'Mawada'}[t]||t;}
+
+function v(id){const el=document.getElementById(id);return el?el.value.trim():'';}
+function c(id,val){const el=document.getElementById(id);if(el)el.value=val;}
+
+let toastTimer;
+function toast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>t.classList.remove('show'),2200);
+}
+
+// ── INIT ─────────────────────────────────────────────────
+syncData();
+// Auto-sync elke 30 seconden
+setInterval(syncData, 30000);
+</script>
+</body>
+</html>
