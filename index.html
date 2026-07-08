@@ -1,0 +1,1246 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Islamitisch Centrum Drachten</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --teal:#4A9B9B;
+  --teal-dark:#357070;
+  --teal-light:#E8F4F4;
+  --teal-mid:#8FCCCC;
+  --charcoal:#1C2626;
+  --charcoal-mid:#2E3E3E;
+  --bg:#F4F7F7;
+  --surface:#FFFFFF;
+  --surface2:#F0F5F5;
+  --border:#D8E8E8;
+  --mawada:#7B5EA7;
+  --mawada-light:#F0ECF8;
+  --mawada-mid:#B8A8D8;
+  --sand:#C4965A;
+  --sand-light:#F8F0E4;
+  --rose:#B06060;
+  --rose-light:#F8EEEE;
+  --text:#1C2626;
+  --text-mid:#3D5454;
+  --text-muted:#7A9999;
+  --shadow:0 1px 4px rgba(28,38,38,.08);
+  --shadow-md:0 4px 20px rgba(28,38,38,.10);
+  --r:10px;
+}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-size:14px;min-height:100vh;display:flex;flex-direction:column}
+
+/* ── HEADER ── */
+header{background:var(--charcoal);height:58px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.2)}
+.header-left{display:flex;align-items:center;gap:10px}
+.menu-btn{background:none;border:none;color:rgba(255,255,255,.7);font-size:20px;cursor:pointer;padding:6px;border-radius:7px;line-height:1;transition:all .15s}
+.menu-btn:hover{background:rgba(255,255,255,.1);color:#fff}
+.logo{display:flex;align-items:center;gap:9px}
+.logo-icon{width:32px;height:32px;background:var(--teal);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px}
+.logo-text{font-family:'Lora',serif;font-size:15px;font-weight:600;color:#fff;letter-spacing:.01em}
+.logo-sub{font-size:10px;color:var(--teal-mid);margin-top:1px;letter-spacing:.04em}
+.header-right{display:flex;align-items:center;gap:8px}
+.user-chip{display:flex;align-items:center;gap:5px;border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:4px 11px;font-size:12px;color:rgba(255,255,255,.8);cursor:pointer;transition:all .15s}
+.user-chip.active{background:var(--teal);border-color:var(--teal);color:#fff}
+.sync-pill{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--teal-mid);cursor:pointer;padding:4px 8px;border-radius:6px;transition:all .15s}
+.sync-pill:hover{background:rgba(255,255,255,.08)}
+.sdot{width:6px;height:6px;border-radius:50%;background:var(--teal);animation:blink 2s infinite}
+.sdot.off{background:#888;animation:none}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.35}}
+
+/* ── LAYOUT ── */
+.app{display:flex;flex:1;min-height:0}
+
+/* ── SIDEBAR ── */
+nav{width:220px;background:var(--surface);border-right:1px solid var(--border);padding:12px 0 20px;display:flex;flex-direction:column;flex-shrink:0;position:sticky;top:58px;height:calc(100vh - 58px);overflow-y:auto;transition:width .25s ease,transform .25s ease;z-index:50}
+nav.collapsed{width:0;overflow:hidden;border-right:none}
+.nav-sect{margin-top:8px}
+.nav-sect-label{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);padding:0 14px;margin-bottom:2px;margin-top:6px}
+.nav-item{display:flex;align-items:center;gap:9px;padding:8px 14px;cursor:pointer;border-left:3px solid transparent;font-size:13px;color:var(--text-mid);transition:all .15s;user-select:none}
+.nav-item:hover{background:var(--teal-light);color:var(--teal)}
+.nav-item.active{background:var(--teal-light);color:var(--teal);border-left-color:var(--teal);font-weight:500}
+.nav-item.mw:hover{background:var(--mawada-light);color:var(--mawada)}
+.nav-item.mw.active{background:var(--mawada-light);color:var(--mawada);border-left-color:var(--mawada)}
+.nav-icon{font-size:15px;width:20px;text-align:center;flex-shrink:0}
+.nav-badge{margin-left:auto;background:var(--teal);color:#fff;border-radius:10px;padding:1px 7px;font-size:10px;font-weight:700}
+.nav-badge.mw{background:var(--mawada)}
+.nav-div{height:1px;background:var(--border);margin:6px 14px}
+
+/* overlay on mobile */
+.nav-overlay{display:none;position:fixed;inset:0;top:58px;background:rgba(28,38,38,.4);z-index:49;backdrop-filter:blur(2px)}
+.nav-overlay.show{display:block}
+
+/* ── MAIN ── */
+main{flex:1;padding:24px 20px;overflow-y:auto;min-width:0}
+.page{display:none}
+.page.active{display:block}
+
+/* ── PAGE HEADER ── */
+.ph{margin-bottom:20px;display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.ph-left{}
+.page-title{font-family:'Lora',serif;font-size:20px;font-weight:600;color:var(--text)}
+.page-title.mw{color:var(--mawada)}
+.page-sub{font-size:12px;color:var(--text-muted);margin-top:2px}
+.ph-action{background:var(--teal);color:#fff;border:none;border-radius:8px;padding:7px 14px;font-size:12px;font-weight:500;cursor:pointer;font-family:inherit;white-space:nowrap;flex-shrink:0}
+.ph-action:hover{background:var(--teal-dark)}
+.ph-action.mw{background:var(--mawada)}
+
+/* ── STAT CARDS ── */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
+.stat{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:14px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+.stat::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--teal)}
+.stat.mw::before{background:var(--mawada)}
+.stat.sand::before{background:var(--sand)}
+.stat.rose::before{background:var(--rose)}
+.stat-icon{font-size:20px;margin-bottom:8px}
+.stat-val{font-family:'Lora',serif;font-size:26px;font-weight:700;color:var(--text);line-height:1;margin-bottom:3px}
+.stat-label{font-size:11px;color:var(--text-muted);font-weight:500}
+
+/* ── CARDS ── */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden;margin-bottom:16px}
+.card-head{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 0}
+.card-title{font-family:'Lora',serif;font-size:14px;font-weight:600;color:var(--text);display:flex;align-items:center;gap:6px}
+.card-action{font-size:11px;color:var(--teal);cursor:pointer;font-weight:500;background:none;border:none;font-family:inherit}
+.card-body{padding:12px 16px 16px}
+
+/* ── GRID ── */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+
+/* ── BOT BANNER ── */
+.bot-banner{background:linear-gradient(135deg,var(--teal-light),#EDF5F5);border:1px solid var(--border);border-radius:var(--r);padding:12px 16px;margin-bottom:18px;display:flex;align-items:center;gap:12px}
+.bot-banner-ico{font-size:22px;flex-shrink:0}
+.bot-banner-info{flex:1}
+.bot-banner-title{font-size:13px;font-weight:600;color:var(--teal-dark);margin-bottom:1px}
+.bot-banner-sub{font-size:11px;color:var(--text-muted)}
+.bot-banner-btn{background:var(--teal);color:#fff;border:none;border-radius:7px;padding:6px 13px;font-size:12px;cursor:pointer;font-family:inherit;font-weight:500;white-space:nowrap;flex-shrink:0}
+.bot-banner-btn:hover{background:var(--teal-dark)}
+
+/* ── ADD BAR ── */
+.add-form{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:14px 16px;margin-bottom:14px;box-shadow:var(--shadow)}
+.add-form-title{font-size:12px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px}
+.add-row{display:flex;gap:7px;flex-wrap:wrap;align-items:flex-end}
+.add-input{flex:1;min-width:140px;padding:8px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;font-size:13px;font-family:inherit;color:var(--text);outline:none;transition:border-color .15s}
+.add-input:focus{border-color:var(--teal);background:var(--surface)}
+.add-select{padding:8px 10px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;font-size:12px;font-family:inherit;color:var(--text);outline:none}
+.add-btn{background:var(--teal);color:#fff;border:none;border-radius:8px;padding:8px 16px;font-size:13px;font-family:inherit;font-weight:600;cursor:pointer;white-space:nowrap;transition:background .15s}
+.add-btn:hover{background:var(--teal-dark)}
+.add-btn.mw{background:var(--mawada)}
+.add-btn.mw:hover{background:#6A4E96}
+
+/* ── TABS ── */
+.tabs{display:flex;gap:2px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:3px;width:fit-content;margin-bottom:14px}
+.tab{padding:5px 14px;border-radius:6px;font-size:12px;cursor:pointer;color:var(--text-muted);font-family:inherit;background:none;border:none;font-weight:500;transition:all .15s}
+.tab.active{background:var(--surface);color:var(--teal);font-weight:600;box-shadow:var(--shadow)}
+
+/* ── TASK ── */
+.task-list{display:flex;flex-direction:column;gap:7px}
+.task-item{display:flex;align-items:flex-start;gap:9px;padding:10px 13px;background:var(--surface2);border:1px solid var(--border);border-radius:9px;transition:all .15s;cursor:default}
+.task-item:hover{border-color:var(--teal-mid);background:var(--surface)}
+.task-item.done{opacity:.5}
+.task-check{width:18px;height:18px;border-radius:5px;border:1.5px solid var(--teal-mid);flex-shrink:0;cursor:pointer;margin-top:1px;display:flex;align-items:center;justify-content:center;background:var(--surface);transition:all .15s;color:#fff;font-size:11px}
+.task-check:hover{background:var(--teal-light)}
+.task-check.done{background:var(--teal);border-color:var(--teal)}
+.task-check.mw-check{border-color:var(--mawada-mid)}
+.task-check.mw-check.done{background:var(--mawada);border-color:var(--mawada)}
+.task-body{flex:1;min-width:0}
+.task-name{font-size:13px;font-weight:500;color:var(--text);margin-bottom:3px}
+.task-item.done .task-name{text-decoration:line-through;color:var(--text-muted)}
+.task-meta{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.task-date{font-size:11px;color:var(--text-muted)}
+.prio{font-size:10px;font-weight:700;border-radius:4px;padding:1px 7px;text-transform:uppercase;letter-spacing:.04em}
+.p-high{background:var(--rose-light);color:var(--rose)}
+.p-mid{background:var(--sand-light);color:var(--sand)}
+.p-low{background:var(--teal-light);color:var(--teal)}
+.badge{font-size:10px;font-weight:600;border-radius:10px;padding:1px 7px}
+.b-fouaad{background:var(--mawada-light);color:var(--mawada)}
+.b-nahari{background:var(--teal-light);color:var(--teal)}
+.b-beiden{background:var(--surface2);color:var(--text-muted);border:1px solid var(--border)}
+.task-del{background:none;border:none;font-size:12px;cursor:pointer;color:var(--text-muted);padding:0 3px;opacity:0;transition:opacity .15s;flex-shrink:0}
+.task-item:hover .task-del{opacity:1}
+
+/* ── GOAL ── */
+.goal-list{display:flex;flex-direction:column;gap:10px}
+.goal-item{padding:13px;background:var(--surface2);border:1px solid var(--border);border-radius:9px;transition:border-color .15s}
+.goal-item:hover{border-color:var(--teal-mid)}
+.goal-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.goal-name{font-weight:600;font-size:13px;color:var(--text)}
+.goal-pct{font-size:13px;font-weight:700;color:var(--teal)}
+.goal-pct.mw{color:var(--mawada)}
+.goal-bar{height:6px;background:var(--border);border-radius:3px;overflow:hidden;margin-bottom:7px}
+.goal-fill{height:100%;background:linear-gradient(90deg,var(--teal),var(--teal-mid));border-radius:3px;transition:width .4s}
+.goal-fill.mw{background:linear-gradient(90deg,var(--mawada),var(--mawada-mid))}
+.goal-bottom{display:flex;align-items:center;justify-content:space-between}
+.goal-desc{font-size:11px;color:var(--text-muted);flex:1}
+.goal-actions{display:flex;align-items:center;gap:7px;flex-shrink:0}
+.goal-slider{width:70px;accent-color:var(--teal)}
+.goal-slider.mw{accent-color:var(--mawada)}
+
+/* ── EVENT ── */
+.event-list{display:flex;flex-direction:column;gap:8px}
+.event-item{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;background:var(--surface2);border:1px solid var(--border);border-left:4px solid var(--teal);border-radius:9px;transition:all .15s}
+.event-item:hover{background:var(--surface);border-left-color:var(--teal-dark)}
+.event-date-box{text-align:center;flex-shrink:0;width:40px}
+.event-day{font-family:'Lora',serif;font-size:22px;font-weight:700;color:var(--teal);line-height:1}
+.event-month{font-size:9px;color:var(--text-muted);text-transform:uppercase;font-weight:700;letter-spacing:.06em}
+.event-info{flex:1;min-width:0}
+.event-name{font-weight:600;font-size:13px;margin-bottom:2px;color:var(--text)}
+.event-desc{font-size:11px;color:var(--text-muted)}
+.event-tag{font-size:10px;font-weight:700;border-radius:5px;padding:2px 8px;text-transform:uppercase;height:fit-content;flex-shrink:0;letter-spacing:.04em}
+.et-weekly{background:var(--teal-light);color:var(--teal)}
+.et-intern{background:#EDF4F4;color:#357070}
+.et-public{background:var(--sand-light);color:var(--sand)}
+.et-mawada{background:var(--mawada-light);color:var(--mawada)}
+.event-del{background:none;border:none;font-size:12px;cursor:pointer;color:var(--text-muted);margin-left:6px;opacity:0;transition:opacity .15s}
+.event-item:hover .event-del{opacity:1}
+
+/* ── PROJECT ── */
+.proj-list{display:flex;flex-direction:column;gap:10px}
+.proj-item{padding:14px;background:var(--surface2);border:1px solid var(--border);border-radius:9px;transition:all .15s}
+.proj-item:hover{border-color:var(--teal-mid);background:var(--surface)}
+.proj-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.proj-name{font-weight:600;font-size:13px;color:var(--text)}
+.proj-tag{font-size:10px;font-weight:700;border-radius:5px;padding:2px 8px;text-transform:uppercase;letter-spacing:.04em}
+.pt-active{background:var(--teal-light);color:var(--teal)}
+.pt-plan{background:#EEF4F4;color:#5A8080}
+.pt-review{background:var(--sand-light);color:var(--sand)}
+.proj-bar{height:5px;background:var(--border);border-radius:3px;overflow:hidden;margin-bottom:8px}
+.proj-fill{height:100%;background:linear-gradient(90deg,var(--teal),var(--teal-mid));border-radius:3px}
+.proj-fill.mw{background:linear-gradient(90deg,var(--mawada),var(--mawada-mid))}
+.proj-bottom{display:flex;align-items:center;justify-content:space-between;font-size:11px;color:var(--text-muted)}
+.proj-actions{display:flex;align-items:center;gap:6px}
+
+/* ── IDEAS ── */
+.idea-list{display:flex;flex-direction:column;gap:8px}
+.idea-item{padding:12px 14px;background:var(--surface2);border:1px solid var(--border);border-left:4px solid var(--sand);border-radius:9px;transition:all .15s}
+.idea-item:hover{background:var(--surface);border-left-color:var(--sand)}
+.idea-name{font-weight:600;font-size:13px;color:var(--text);margin-bottom:3px}
+.idea-desc{font-size:12px;color:var(--text-muted);margin-bottom:4px}
+.idea-meta{font-size:10px;color:var(--text-muted)}
+
+/* ── MAWADA ACCENT ── */
+.mw-bar{height:3px;background:linear-gradient(90deg,var(--mawada),var(--mawada-mid));border-radius:2px;margin-bottom:16px}
+
+/* ── AGENT ── */
+.agent-outer{display:flex;flex-direction:column;gap:12px;height:calc(100vh - 200px);min-height:480px}
+.agent-chips{display:flex;gap:7px;flex-wrap:wrap}
+.agent-chip{border:1px solid var(--border);background:var(--surface);color:var(--text-mid);border-radius:20px;padding:5px 13px;font-size:12px;font-weight:500;cursor:pointer;font-family:inherit;transition:all .15s;box-shadow:var(--shadow)}
+.agent-chip:hover{background:var(--teal-light);border-color:var(--teal-mid);color:var(--teal);transform:translateY(-1px)}
+.agent-chat{flex:1;border:1px solid var(--border);border-radius:14px;background:var(--surface);display:flex;flex-direction:column;overflow:hidden;box-shadow:var(--shadow-md)}
+.agent-head{display:flex;align-items:center;gap:10px;padding:13px 16px;border-bottom:1px solid var(--border);background:var(--charcoal)}
+.agent-av{width:34px;height:34px;border-radius:9px;background:var(--teal);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.agent-hname{font-size:14px;font-weight:600;color:#fff}
+.agent-hstatus{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--teal-mid);margin-top:1px}
+.agent-msgs{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px}
+.msg-row{display:flex;gap:8px;align-items:flex-end}
+.msg-row.user{flex-direction:row-reverse}
+.msg-av{width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;color:#fff}
+.msg-av.bot{background:var(--teal);font-size:13px}
+.msg-av.user{background:var(--charcoal)}
+.msg-bubble{max-width:68%;padding:9px 13px;border-radius:12px;font-size:13px;line-height:1.55}
+.msg-bubble.bot{background:var(--surface2);border:1px solid var(--border);color:var(--text);border-bottom-left-radius:3px}
+.msg-bubble.user{background:var(--teal);color:#fff;border-bottom-right-radius:3px}
+.msg-bubble.thinking{background:var(--surface2);border:1px solid var(--border);color:var(--text-muted)}
+.msg-time{font-size:10px;color:var(--text-muted);margin-top:3px}
+.msg-row.user .msg-time{text-align:right}
+.dots{display:inline-flex;gap:3px;align-items:center}
+.dot{width:5px;height:5px;border-radius:50%;background:var(--text-muted);animation:bounce 1.2s infinite}
+.dot:nth-child(2){animation-delay:.2s}
+.dot:nth-child(3){animation-delay:.4s}
+@keyframes bounce{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-6px)}}
+.agent-input-bar{display:flex;align-items:flex-end;gap:8px;padding:11px 14px;border-top:1px solid var(--border);background:var(--surface2)}
+.agent-inp{flex:1;padding:9px 14px;background:var(--surface);border:1px solid var(--border);border-radius:20px;font-size:13px;font-family:inherit;color:var(--text);outline:none;resize:none;min-height:38px;max-height:100px;line-height:1.5;transition:border-color .15s}
+.agent-inp:focus{border-color:var(--teal)}
+.agent-send-btn{width:36px;height:36px;border-radius:50%;background:var(--teal);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;color:#fff;flex-shrink:0;transition:background .15s}
+.agent-send-btn:hover{background:var(--teal-dark)}
+.agent-send-btn:disabled{background:var(--teal-mid);cursor:not-allowed}
+
+/* ── EMPTY ── */
+.empty{text-align:center;padding:28px 14px;color:var(--text-muted);font-size:13px}
+.empty-icon{font-size:28px;margin-bottom:8px;opacity:.5}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:20px;right:20px;background:var(--charcoal);color:#fff;border-radius:10px;padding:9px 16px;font-size:13px;z-index:999;opacity:0;transform:translateY(8px);transition:all .22s;pointer-events:none;box-shadow:var(--shadow-md)}
+.toast.show{opacity:1;transform:translateY(0)}
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px){
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .g2,.g3,.week-stat-row{grid-template-columns:1fr}
+  nav{position:fixed;top:58px;left:0;height:calc(100vh - 58px);transform:translateX(0);box-shadow:2px 0 16px rgba(0,0,0,.15)}
+  nav.collapsed{transform:translateX(-100%);width:220px}
+  .add-row{flex-direction:column}
+  .add-row .add-input,.add-row .add-select{width:100%;max-width:100%!important}
+  .add-row .add-btn{width:100%}
+  .search-inp{width:120px}
+  .search-inp:focus{width:150px}
+  .search-results{width:240px;right:-60px}
+  header .logo-text{display:none}
+}
+@media(min-width:769px){
+  nav.collapsed{width:0;overflow:hidden;border-right:none}
+}
+
+/* ── DEADLINE WARNINGS ── */
+.task-item.overdue{border-color:#E57373;background:#FFF5F5}
+.task-item.overdue:hover{border-color:#C62828}
+.task-item.due-soon{border-color:var(--sand);background:#FFFBF5}
+.task-item.due-soon:hover{border-color:#A0600A}
+.deadline-warn{font-size:10px;font-weight:700;border-radius:4px;padding:1px 7px;text-transform:uppercase}
+.dw-over{background:#FFEBEE;color:#C62828}
+.dw-soon{background:#FFF3E0;color:#E65100}
+
+/* ── SEARCH ── */
+.search-inp{padding:6px 12px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:20px;font-size:12px;font-family:inherit;color:#fff;outline:none;width:180px;transition:all .2s}
+.search-inp::placeholder{color:rgba(255,255,255,.5)}
+.search-inp:focus{background:rgba(255,255,255,.18);border-color:rgba(255,255,255,.4);width:220px}
+.search-results{position:absolute;top:36px;right:0;width:300px;background:var(--surface);border:1px solid var(--border);border-radius:10px;box-shadow:var(--shadow-md);z-index:200;max-height:320px;overflow-y:auto;display:none}
+.search-results.show{display:block}
+.search-item{display:flex;align-items:center;gap:10px;padding:9px 14px;cursor:pointer;border-bottom:1px solid var(--border);transition:background .15s}
+.search-item:last-child{border-bottom:none}
+.search-item:hover{background:var(--teal-light)}
+.search-icon{font-size:14px;flex-shrink:0}
+.search-name{flex:1;font-size:13px;font-weight:500;color:var(--text)}
+.search-meta{font-size:11px;color:var(--text-muted)}
+.search-empty{padding:16px;text-align:center;color:var(--text-muted);font-size:13px}
+
+/* ── WEEK STATS ── */
+.week-stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
+.week-stat{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:12px;text-align:center;box-shadow:var(--shadow)}
+.week-stat-num{font-family:'Lora',serif;font-size:22px;font-weight:700;color:var(--teal)}
+.week-stat-num.red{color:var(--rose)}
+.week-stat-label{font-size:11px;color:var(--text-muted);margin-top:2px}
+
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-left">
+    <button class="menu-btn" onclick="toggleNav()" aria-label="Menu">☰</button>
+    <div class="logo">
+      <img src="https://alnahharii-collab.github.io/abdalla/moskee.png" alt="Logo" style="height:40px;width:auto;object-fit:contain;mix-blend-mode:screen">
+      <div>
+        <div class="logo-text">Islamitisch Centrum Drachten</div>
+        <div class="logo-sub">Beheer & Planning</div>
+      </div>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="search-wrap" style="position:relative">
+      <input id="search-inp" class="search-inp" placeholder="🔍 Zoeken…" oninput="doSearch(this.value)" onblur="setTimeout(()=>closeSearch(),200)">
+      <div id="search-results" class="search-results"></div>
+    </div>
+    <div class="sync-pill" onclick="syncData()" id="sync-pill">
+      <div class="sdot" id="sdot"></div>
+      <span id="sync-label">Sync</span>
+    </div>
+    <div class="user-chip active" id="chip-f" onclick="switchUser('Fouaad')">Fouaad</div>
+    <div class="user-chip" id="chip-n" onclick="switchUser('Nahari')">Nahari</div>
+  </div>
+</header>
+
+<div class="nav-overlay" id="nav-overlay" onclick="toggleNav()"></div>
+
+<div class="app">
+<nav id="main-nav">
+  <div class="nav-sect">
+    <div class="nav-sect-label">Overzicht</div>
+    <div class="nav-item active" onclick="nav('dashboard',this)"><span class="nav-icon">⊞</span> Dashboard</div>
+    <div class="nav-item" onclick="nav('week',this)"><span class="nav-icon">📆</span> Deze week <span class="nav-badge" id="b-week" style="background:var(--rose)">0</span></div>
+  </div>
+  <div class="nav-sect">
+    <div class="nav-sect-label">Moskee</div>
+    <div class="nav-item" onclick="nav('planning',this)"><span class="nav-icon">📅</span> Planning <span class="nav-badge" id="b-ev">0</span></div>
+    <div class="nav-item" onclick="nav('taken',this)"><span class="nav-icon">✅</span> Taken <span class="nav-badge" id="b-tk">0</span></div>
+    <div class="nav-item" onclick="nav('doelen',this)"><span class="nav-icon">🎯</span> Doelen</div>
+    <div class="nav-item" onclick="nav('projecten',this)"><span class="nav-icon">📁</span> Projecten</div>
+    <div class="nav-item" onclick="nav('dawah',this)"><span class="nav-icon">📢</span> Dawah</div>
+    <div class="nav-item" onclick="nav('ideeen',this)"><span class="nav-icon">💡</span> Ideeën</div>
+  </div>
+  <div class="nav-div"></div>
+  <div class="nav-sect">
+    <div class="nav-sect-label">Stichting Mawada</div>
+    <div class="nav-item mw" onclick="nav('mw-taken',this)"><span class="nav-icon">✅</span> Taken <span class="nav-badge mw" id="b-mw">0</span></div>
+    <div class="nav-item mw" onclick="nav('mw-doelen',this)"><span class="nav-icon">🎯</span> Doelen</div>
+    <div class="nav-item mw" onclick="nav('mw-projecten',this)"><span class="nav-icon">📁</span> Projecten</div>
+  </div>
+  <div class="nav-div"></div>
+  <div class="nav-sect">
+    <div class="nav-sect-label">Systeem</div>
+    <div class="nav-item" onclick="nav('agent',this)"><span class="nav-icon">🤖</span> AI Agent</div>
+  </div>
+</nav>
+
+<main>
+
+<!-- DASHBOARD -->
+<div id="pg-dashboard" class="page active">
+  <div class="ph">
+    <div class="ph-left">
+      <div class="page-title" id="greeting">Goedemiddag 🌿</div>
+      <div class="page-sub" id="dash-date"></div>
+    </div>
+  </div>
+  <div class="bot-banner">
+    <div class="bot-banner-ico">🤖</div>
+    <div class="bot-banner-info">
+      <div class="bot-banner-title">Telegram Bot actief — @moskee_bot</div>
+      <div class="bot-banner-sub">Stuur een bericht en het verschijnt hier automatisch</div>
+    </div>
+    <button class="bot-banner-btn" onclick="syncData()">🔄 Vernieuwen</button>
+  </div>
+  <div class="stats">
+    <div class="stat"><div class="stat-icon">✅</div><div class="stat-val" id="s-taken">0</div><div class="stat-label">Open taken</div></div>
+    <div class="stat sand"><div class="stat-icon">📅</div><div class="stat-val" id="s-events">0</div><div class="stat-label">Evenementen</div></div>
+    <div class="stat rose"><div class="stat-icon">📁</div><div class="stat-val" id="s-projs">0</div><div class="stat-label">Actieve projecten</div></div>
+    <div class="stat mw"><div class="stat-icon">🏛</div><div class="stat-val" id="s-mw">0</div><div class="stat-label">Mawada taken</div></div>
+  </div>
+  <div class="g2">
+    <div class="card"><div class="card-head"><div class="card-title">📅 Aankomend</div><button class="card-action" onclick="nav('planning',document.querySelector('[onclick*=planning]'))">Alle →</button></div><div class="card-body" id="d-events"></div></div>
+    <div class="card"><div class="card-head"><div class="card-title">✅ Mijn taken</div><button class="card-action" onclick="nav('taken',document.querySelector('[onclick*=taken]'))">Alle →</button></div><div class="card-body" id="d-tasks"></div></div>
+  </div>
+  <div class="g3" style="margin-top:14px">
+    <div class="card"><div class="card-head"><div class="card-title">📁 Projecten</div></div><div class="card-body" id="d-projs"></div></div>
+    <div class="card"><div class="card-head"><div class="card-title" style="color:var(--mawada)">🏛 Mawada</div></div><div class="card-body" id="d-mw"></div></div>
+    <div class="card"><div class="card-head"><div class="card-title">💡 Ideeën</div></div><div class="card-body" id="d-ideas"></div></div>
+  </div>
+</div>
+
+<!-- PLANNING -->
+<div id="pg-planning" class="page">
+  <div class="ph"><div class="ph-left"><div class="page-title">📅 Planning</div><div class="page-sub">Evenementen via Telegram of handmatig toevoegen</div></div></div>
+  <div class="add-form">
+    <div class="add-form-title">Nieuw evenement</div>
+    <div class="add-row">
+      <input class="add-input" id="ev-name" placeholder="Naam evenement…">
+      <input class="add-select" type="date" id="ev-date">
+      <input class="add-input" style="max-width:90px" id="ev-time" placeholder="13:30">
+      <select class="add-select" id="ev-type"><option value="weekly">Wekelijks</option><option value="intern">Intern</option><option value="public">Publiek</option><option value="mawada">Mawada</option></select>
+      <input class="add-input" style="max-width:160px" id="ev-desc" placeholder="Beschrijving…">
+      <button class="add-btn" onclick="addEvent()">+ Toevoegen</button>
+    </div>
+  </div>
+  <div class="event-list" id="event-list"></div>
+</div>
+
+<!-- TAKEN MOSKEE -->
+<div id="pg-taken" class="page">
+  <div class="ph"><div class="ph-left"><div class="page-title">✅ Taken — Moskee</div><div class="page-sub">Koppel taken aan Fouaad of Nahari</div></div></div>
+  <div class="add-form">
+    <div class="add-form-title">Nieuwe taak</div>
+    <div class="add-row">
+      <input class="add-input" id="t-name" placeholder="Taakomschrijving…">
+      <select class="add-select" id="t-prio"><option value="high">🔴 Hoog</option><option value="mid" selected>🟡 Midden</option><option value="low">🟢 Laag</option></select>
+      <select class="add-select" id="t-person"><option value="Fouaad">Fouaad</option><option value="Nahari">Nahari</option><option value="Beiden">Beiden</option></select>
+      <input class="add-select" type="date" id="t-date">
+      <button class="add-btn" onclick="addTask('moskee')">+ Toevoegen</button>
+    </div>
+  </div>
+  <div class="tabs">
+    <button class="tab active" onclick="filterT('moskee','alle',this)">Alle</button>
+    <button class="tab" onclick="filterT('moskee','Fouaad',this)">Fouaad</button>
+    <button class="tab" onclick="filterT('moskee','Nahari',this)">Nahari</button>
+    <button class="tab" onclick="filterT('moskee','open',this)">Open</button>
+    <button class="tab" onclick="filterT('moskee','done',this)">Gedaan</button>
+  </div>
+  <div class="task-list" id="tl-moskee"></div>
+</div>
+
+<!-- DOELEN MOSKEE -->
+<div id="pg-doelen" class="page">
+  <div class="ph"><div class="ph-left"><div class="page-title">🎯 Doelen — Moskee</div><div class="page-sub">Langetermijn doelen van de moskee</div></div></div>
+  <div class="add-form">
+    <div class="add-form-title">Nieuw doel</div>
+    <div class="add-row">
+      <input class="add-input" id="g-name" placeholder="Doel omschrijving…">
+      <input class="add-input" style="max-width:220px" id="g-desc" placeholder="Toelichting…">
+      <button class="add-btn" onclick="addGoal('moskee')">+ Toevoegen</button>
+    </div>
+  </div>
+  <div class="goal-list" id="gl-moskee"></div>
+</div>
+
+<!-- PROJECTEN MOSKEE -->
+<div id="pg-projecten" class="page">
+  <div class="ph"><div class="ph-left"><div class="page-title">📁 Projecten — Moskee</div><div class="page-sub">Lopende en geplande projecten</div></div></div>
+  <div class="add-form">
+    <div class="add-form-title">Nieuw project</div>
+    <div class="add-row">
+      <input class="add-input" id="p-name" placeholder="Projectnaam…">
+      <select class="add-select" id="p-status"><option value="active">Actief</option><option value="plan">Planning</option><option value="review">Review</option></select>
+      <input class="add-select" type="date" id="p-deadline">
+      <select class="add-select" id="p-person"><option value="Fouaad">Fouaad</option><option value="Nahari">Nahari</option><option value="Beiden">Beiden</option></select>
+      <button class="add-btn" onclick="addProject('moskee')">+ Toevoegen</button>
+    </div>
+  </div>
+  <div class="proj-list" id="pl-moskee"></div>
+</div>
+
+<!-- DAWAH -->
+<div id="pg-dawah" class="page">
+  <div class="ph"><div class="ph-left"><div class="page-title">📢 Dawah</div><div class="page-sub">Activiteiten en taken voor dawah</div></div></div>
+  <div class="add-form">
+    <div class="add-form-title">Nieuwe dawah taak</div>
+    <div class="add-row">
+      <input class="add-input" id="dw-name" placeholder="Dawah taak of activiteit…">
+      <select class="add-select" id="dw-prio"><option value="high">🔴 Hoog</option><option value="mid" selected>🟡 Midden</option><option value="low">🟢 Laag</option></select>
+      <select class="add-select" id="dw-person"><option value="Fouaad">Fouaad</option><option value="Nahari">Nahari</option><option value="Beiden">Beiden</option></select>
+      <button class="add-btn" onclick="addTask('dawah')">+ Toevoegen</button>
+    </div>
+  </div>
+  <div class="task-list" id="tl-dawah"></div>
+</div>
+
+<!-- IDEEËN -->
+<div id="pg-ideeen" class="page">
+  <div class="ph"><div class="ph-left"><div class="page-title">💡 Ideeën</div><div class="page-sub">Ideeën en voorstellen — via Telegram of handmatig</div></div></div>
+  <div class="add-form">
+    <div class="add-form-title">Nieuw idee</div>
+    <div class="add-row">
+      <input class="add-input" id="i-name" placeholder="Idee omschrijving…">
+      <input class="add-input" style="max-width:220px" id="i-desc" placeholder="Toelichting…">
+      <button class="add-btn" onclick="addIdea()">+ Toevoegen</button>
+    </div>
+  </div>
+  <div class="idea-list" id="idea-list"></div>
+</div>
+
+<!-- MAWADA TAKEN -->
+<div id="pg-mw-taken" class="page">
+  <div class="ph"><div class="ph-left"><div class="page-title mw">✅ Taken — Stichting Mawada</div><div class="page-sub">Taken voor Stichting Mawada</div></div></div>
+  <div class="mw-bar"></div>
+  <div class="add-form">
+    <div class="add-form-title">Nieuwe taak</div>
+    <div class="add-row">
+      <input class="add-input" id="mt-name" placeholder="Taakomschrijving…">
+      <select class="add-select" id="mt-prio"><option value="high">🔴 Hoog</option><option value="mid" selected>🟡 Midden</option><option value="low">🟢 Laag</option></select>
+      <select class="add-select" id="mt-person"><option value="Fouaad">Fouaad</option><option value="Nahari">Nahari</option><option value="Beiden">Beiden</option></select>
+      <input class="add-select" type="date" id="mt-date">
+      <button class="add-btn mw" onclick="addTask('mawada')">+ Toevoegen</button>
+    </div>
+  </div>
+  <div class="tabs">
+    <button class="tab active" onclick="filterT('mawada','alle',this)">Alle</button>
+    <button class="tab" onclick="filterT('mawada','Fouaad',this)">Fouaad</button>
+    <button class="tab" onclick="filterT('mawada','Nahari',this)">Nahari</button>
+    <button class="tab" onclick="filterT('mawada','open',this)">Open</button>
+  </div>
+  <div class="task-list" id="tl-mawada"></div>
+</div>
+
+<!-- MAWADA DOELEN -->
+<div id="pg-mw-doelen" class="page">
+  <div class="ph"><div class="ph-left"><div class="page-title mw">🎯 Doelen — Stichting Mawada</div></div></div>
+  <div class="mw-bar"></div>
+  <div class="add-form">
+    <div class="add-form-title">Nieuw doel</div>
+    <div class="add-row">
+      <input class="add-input" id="mg-name" placeholder="Doel omschrijving…">
+      <input class="add-input" style="max-width:220px" id="mg-desc" placeholder="Toelichting…">
+      <button class="add-btn mw" onclick="addGoal('mawada')">+ Toevoegen</button>
+    </div>
+  </div>
+  <div class="goal-list" id="gl-mawada"></div>
+</div>
+
+<!-- MAWADA PROJECTEN -->
+<div id="pg-mw-projecten" class="page">
+  <div class="ph"><div class="ph-left"><div class="page-title mw">📁 Projecten — Stichting Mawada</div></div></div>
+  <div class="mw-bar"></div>
+  <div class="add-form">
+    <div class="add-form-title">Nieuw project</div>
+    <div class="add-row">
+      <input class="add-input" id="mp-name" placeholder="Projectnaam…">
+      <select class="add-select" id="mp-status"><option value="active">Actief</option><option value="plan">Planning</option><option value="review">Review</option></select>
+      <input class="add-select" type="date" id="mp-deadline">
+      <select class="add-select" id="mp-person"><option value="Fouaad">Fouaad</option><option value="Nahari">Nahari</option><option value="Beiden">Beiden</option></select>
+      <button class="add-btn mw" onclick="addProject('mawada')">+ Toevoegen</button>
+    </div>
+  </div>
+  <div class="proj-list" id="pl-mawada"></div>
+</div>
+
+<!-- WEEK OVERVIEW -->
+<div id="pg-week" class="page">
+  <div class="ph">
+    <div class="ph-left">
+      <div class="page-title">📆 Deze week</div>
+      <div class="page-sub" id="week-range"></div>
+    </div>
+  </div>
+
+  <div id="week-urgent" style="margin-bottom:16px"></div>
+
+  <div class="g2">
+    <div>
+      <div class="card" style="margin-bottom:14px">
+        <div class="card-head"><div class="card-title">⚠️ Verlopen & urgent</div></div>
+        <div class="card-body" id="week-overdue"></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><div class="card-title">✅ Open taken deze week</div></div>
+        <div class="card-body" id="week-tasks"></div>
+      </div>
+    </div>
+    <div>
+      <div class="card" style="margin-bottom:14px">
+        <div class="card-head"><div class="card-title">📅 Evenementen deze week</div></div>
+        <div class="card-body" id="week-events"></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><div class="card-title">🏛 Mawada deze week</div></div>
+        <div class="card-body" id="week-mawada"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:14px">
+    <div class="card-head"><div class="card-title">📋 Weekoverzicht — alle open taken gesorteerd op prioriteit</div></div>
+    <div class="card-body" id="week-all"></div>
+  </div>
+</div>
+
+<!-- AI AGENT -->
+<div id="pg-agent" class="page">
+  <div class="ph"><div class="ph-left"><div class="page-title">🤖 AI Agent</div><div class="page-sub">Stel vragen, vraag suggesties of laat taken analyseren</div></div></div>
+  <div class="agent-outer">
+    <div class="agent-chips">
+      <button class="agent-chip" onclick="askAgent('Wat zijn de openstaande taken voor deze week?')">📋 Openstaande taken</button>
+      <button class="agent-chip" onclick="askAgent('Geef planning suggesties voor volgende week')">📅 Planning</button>
+      <button class="agent-chip" onclick="askAgent('Wat kan ik automatiseren in de moskee?')">⚡ Automatisering</button>
+      <button class="agent-chip" onclick="askAgent('Hoe staat het met de Mawada projecten?')">🏛 Mawada</button>
+      <button class="agent-chip" onclick="askAgent('Geef dawah activiteiten tips voor Drachten')">📢 Dawah tips</button>
+    </div>
+    <div class="agent-chat">
+      <div class="agent-head">
+        <div class="agent-av">🕌</div>
+        <div>
+          <div class="agent-hname">Al Nahari Agent</div>
+          <div class="agent-hstatus"><div class="sdot"></div> Online · kent jullie dashboard</div>
+        </div>
+      </div>
+      <div class="agent-msgs" id="agent-msgs">
+        <div class="msg-row">
+          <div class="msg-av bot">🕌</div>
+          <div>
+            <div class="msg-bubble bot">As-salamu alaykum! Ik ben de AI agent van Islamitisch Centrum Drachten. Ik ken jullie taken, planning en projecten. Hoe kan ik helpen?</div>
+            <div class="msg-time">Nu</div>
+          </div>
+        </div>
+      </div>
+      <div class="agent-input-bar">
+        <textarea class="agent-inp" id="agent-inp" placeholder="Stel een vraag…" rows="1" onkeydown="agentKey(event)"></textarea>
+        <button class="agent-send-btn" id="agent-send" onclick="sendAgent()">➤</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</main>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const BOT = 'https://alnaharibot-production.up.railway.app';
+const MONTHS = ['','jan','feb','mrt','apr','mei','jun','jul','aug','sep','okt','nov','dec'];
+let S = null, activeUser = 'Fouaad', taskFilters = {moskee:'alle',mawada:'alle'}, agentHist = [], idC = 500;
+
+function defaultS(){return{tasks:{moskee:[],mawada:[],dawah:[]},events:[],projects:{moskee:[],mawada:[]},goals:{moskee:[],mawada:[]},ideas:[]}}
+
+// ── SYNC ──
+async function syncData(){
+  document.getElementById('sync-label').textContent='…';
+  try{
+    const r = await fetch(BOT+'/data?t='+Date.now());
+    if(!r.ok)throw new Error();
+    const d = await r.json();
+    if(!S)S=defaultS();
+    mergeBot(d);
+    document.getElementById('sdot').className='sdot';
+    document.getElementById('sync-label').textContent='Live';
+    renderCurrent();toast('Dashboard bijgewerkt');
+  }catch(e){
+    document.getElementById('sdot').className='sdot off';
+    document.getElementById('sync-label').textContent='Offline';
+    if(!S)S=defaultS();
+    renderCurrent();
+  }
+}
+
+function mergeBot(b){
+  ['moskee','mawada','dawah'].forEach(s=>{
+    const bt=b.tasks?.[s]||[],lt=S.tasks[s]||[],ids=new Set(lt.map(t=>t.id));
+    bt.forEach(t=>{if(!ids.has(t.id))S.tasks[s].unshift(t)});
+  });
+  const eIds=new Set(S.events.map(e=>e.id));
+  (b.events||[]).forEach(e=>{if(!eIds.has(e.id))S.events.unshift(e)});
+  ['moskee','mawada'].forEach(s=>{
+    const bp=b.projects?.[s]||[],lp=S.projects[s]||[],ids=new Set(lp.map(p=>p.id));
+    bp.forEach(p=>{if(!ids.has(p.id))S.projects[s].push(p)});
+    const bg=b.goals?.[s]||[],lg=S.goals[s]||[],gids=new Set(lg.map(g=>g.id));
+    bg.forEach(g=>{if(!gids.has(g.id))S.goals[s].unshift(g)});
+  });
+  const iIds=new Set(S.ideas.map(i=>i.id));
+  (b.ideas||[]).forEach(i=>{if(!iIds.has(i.id))S.ideas.unshift(i)});
+}
+
+async function delFromServer(type,section,id){
+  try{await fetch(BOT+'/delete',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type,section,id})});}catch(e){}
+}
+
+// ── NAV ──
+let currentPage='dashboard';
+function nav(id,el){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('pg-'+id).classList.add('active');
+  if(el)el.classList.add('active');
+  currentPage=id;
+  renderPage(id);
+  if(window.innerWidth<=768){
+    document.getElementById('main-nav').classList.add('collapsed');
+    document.getElementById('nav-overlay').classList.remove('show');
+  }
+}
+
+function renderCurrent(){renderPage(currentPage);}
+
+function renderPage(id){
+  if(!S)return;
+  const m={
+    dashboard:renderDash,
+    week:renderWeek,
+    planning:()=>renderEvents(),
+    taken:()=>renderTasks('moskee'),
+    doelen:()=>renderGoals('moskee'),
+    projecten:()=>renderProjects('moskee'),
+    dawah:()=>renderTasks('dawah'),
+    ideeen:renderIdeas,
+    'mw-taken':()=>renderTasks('mawada'),
+    'mw-doelen':()=>renderGoals('mawada'),
+    'mw-projecten':()=>renderProjects('mawada'),
+  };
+  m[id]?.();
+  updateBadges();
+}
+
+function toggleNav(){
+  const n=document.getElementById('main-nav'),o=document.getElementById('nav-overlay');
+  n.classList.toggle('collapsed');
+  if(window.innerWidth<=768)o.classList.toggle('show',!n.classList.contains('collapsed'));
+}
+
+function switchUser(u){
+  activeUser=u;
+  document.getElementById('chip-f').className='user-chip'+(u==='Fouaad'?' active':'');
+  document.getElementById('chip-n').className='user-chip'+(u==='Nahari'?' active':'');
+  renderDash();toast('Ingelogd als '+u);
+}
+
+// ── DASHBOARD ──
+function renderDash(){
+  const h=new Date().getHours();
+  const g=h<5?'Goede nacht':h<12?'Goedemorgen':h<18?'Goedemiddag':'Goedenavond';
+  const ic=h<5?'🌙':h<12?'🌤':h<18?'🌿':'🌙';
+  document.getElementById('greeting').textContent=g+', '+activeUser+' '+ic;
+  document.getElementById('dash-date').textContent=new Date().toLocaleDateString('nl-NL',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  document.getElementById('s-taken').textContent=S.tasks.moskee.filter(t=>!t.done).length;
+  document.getElementById('s-events').textContent=S.events.length;
+  document.getElementById('s-projs').textContent=[...S.projects.moskee,...S.projects.mawada].filter(p=>p.status==='active').length;
+  document.getElementById('s-mw').textContent=S.tasks.mawada.filter(t=>!t.done).length;
+
+  const evEl=document.getElementById('d-events');
+  const evs=[...S.events].sort((a,b)=>a.date.localeCompare(b.date)).slice(0,3);
+  evEl.innerHTML=evs.length?evs.map(e=>`
+    <div class="event-item" style="margin-bottom:7px">
+      <div class="event-date-box"><div class="event-day">${e.date.split('-')[2]||'?'}</div><div class="event-month">${MONTHS[+e.date.split('-')[1]]||''}</div></div>
+      <div class="event-info"><div class="event-name">${e.name}</div><div class="event-desc">${e.time||''}${e.desc?' · '+e.desc:''}</div></div>
+      <div class="event-tag et-${e.type}">${tLabel(e.type)}</div>
+    </div>`).join(''):'<div class="empty"><div class="empty-icon">📅</div>Geen evenementen</div>';
+
+  const tEl=document.getElementById('d-tasks');
+  const myT=[...S.tasks.moskee,...S.tasks.dawah].filter(t=>!t.done&&(t.person===activeUser||t.person==='Beiden')).slice(0,4);
+  tEl.innerHTML=myT.length?myT.map(t=>`
+    <div class="task-item" style="margin-bottom:6px">
+      <div class="task-body"><div class="task-name">${t.name}</div>
+      <div class="task-meta">${t.date?`<span class="task-date">📅 ${t.date}</span>`:''}<span class="prio p-${t.prio}">${pLabel(t.prio)}</span></div></div>
+    </div>`).join(''):'<div class="empty"><div class="empty-icon">✅</div>Geen open taken voor jou</div>';
+
+  const pEl=document.getElementById('d-projs');
+  pEl.innerHTML=S.projects.moskee.slice(0,3).map(p=>`
+    <div style="margin-bottom:9px">
+      <div style="display:flex;justify-content:space-between;font-size:12px;font-weight:500;margin-bottom:4px"><span>${p.name}</span><span class="proj-tag pt-${p.status}">${stLabel(p.status)}</span></div>
+      <div class="proj-bar"><div class="proj-fill" style="width:${p.pct}%"></div></div>
+    </div>`).join('')||'<div class="empty"><div class="empty-icon">📁</div>Geen projecten</div>';
+
+  const mEl=document.getElementById('d-mw');
+  mEl.innerHTML=S.tasks.mawada.filter(t=>!t.done).slice(0,3).map(t=>`
+    <div class="task-item" style="margin-bottom:6px"><div class="task-body"><div class="task-name">${t.name}</div></div></div>`).join('')||'<div class="empty"><div class="empty-icon">✅</div>Geen open taken</div>';
+
+  const iEl=document.getElementById('d-ideas');
+  iEl.innerHTML=S.ideas.slice(0,3).map(i=>`
+    <div class="idea-item" style="margin-bottom:6px"><div class="idea-name">💡 ${i.name}</div>${i.desc?`<div class="idea-desc">${i.desc}</div>`:''}</div>`).join('')||'<div class="empty"><div class="empty-icon">💡</div>Geen ideeën</div>';
+}
+
+function updateBadges(){
+  document.getElementById('b-tk').textContent=S.tasks.moskee.filter(t=>!t.done).length;
+  document.getElementById('b-mw').textContent=S.tasks.mawada.filter(t=>!t.done).length;
+  document.getElementById('b-ev').textContent=S.events.length;
+  // Week badge = overdue + this week
+  const today=new Date();today.setHours(0,0,0,0);
+  const mon=new Date(today);mon.setDate(today.getDate()-today.getDay()+1);
+  const sun=new Date(mon);sun.setDate(mon.getDate()+6);sun.setHours(23,59,59,999);
+  const allT=[...S.tasks.moskee,...S.tasks.dawah,...S.tasks.mawada];
+  const urgent=allT.filter(t=>{
+    if(t.done||!t.date)return false;
+    const d=new Date(t.date);d.setHours(0,0,0,0);
+    return d<=sun;
+  }).length;
+  const bw=document.getElementById('b-week');
+  if(bw){bw.textContent=urgent;bw.style.background=urgent>0?'var(--rose)':'var(--teal)';}
+}
+
+// ── EVENTS ──
+function addEvent(){
+  const name=v('ev-name');if(!name){toast('Vul een naam in');return;}
+  const date=v('ev-date');if(!date){toast('Vul een datum in');return;}
+  S.events.push({id:++idC,name,date,time:v('ev-time')||'',type:v('ev-type')||'intern',desc:v('ev-desc')||''});
+  c('ev-name','');c('ev-date','');c('ev-time','');c('ev-desc','');
+  renderEvents();updateBadges();toast('Evenement toegevoegd');
+}
+function deleteEvent(id){
+  if(!confirm('Evenement verwijderen?'))return;
+  S.events=S.events.filter(e=>e.id!==id);
+  delFromServer('event','moskee',id);
+  renderEvents();updateBadges();
+}
+function renderEvents(){
+  const el=document.getElementById('event-list');if(!el)return;
+  const sorted=[...S.events].sort((a,b)=>a.date.localeCompare(b.date));
+  el.innerHTML=sorted.length?sorted.map(e=>`
+    <div class="event-item">
+      <div class="event-date-box"><div class="event-day">${(e.date||'').split('-')[2]||'?'}</div><div class="event-month">${MONTHS[+(e.date||'').split('-')[1]]||''}</div></div>
+      <div class="event-info"><div class="event-name">${e.name}</div><div class="event-desc">${e.time||''}${e.desc?' · '+e.desc:''}</div></div>
+      <div class="event-tag et-${e.type}">${tLabel(e.type)}</div>
+      <button class="event-del" onclick="deleteEvent(${e.id})">✕</button>
+    </div>`).join(''):'<div class="empty"><div class="empty-icon">📅</div>Nog geen evenementen. Voeg er een toe!</div>';
+}
+
+// ── TASKS ──
+function addTask(group){
+  const ids={moskee:['t-name','t-prio','t-person','t-date'],mawada:['mt-name','mt-prio','mt-person','mt-date'],dawah:['dw-name','dw-prio','dw-person',null]};
+  const [nId,prId,peId,dId]=ids[group];
+  const name=v(nId);if(!name){toast('Vul een taaknaam in');return;}
+  const person=v(peId)||'Beiden';
+  S.tasks[group].unshift({id:++idC,name,prio:v(prId)||'mid',person,date:dId?v(dId):'',done:false});
+  c(nId,'');if(dId)c(dId,'');
+  renderTasks(group);updateBadges();toast('Taak toegevoegd');
+  // Stuur Telegram notificatie als taak aan iemand specifiek toegewezen
+  if(person==='Fouaad'||person==='Nahari'){notifyAssignee(name,person,group);}
+}
+function toggleTask(group,id){
+  const t=S.tasks[group]?.find(x=>x.id===id);
+  if(t){t.done=!t.done;renderTasks(group);updateBadges();}
+}
+function deleteTask(group,id){
+  if(!confirm('Taak verwijderen?'))return;
+  S.tasks[group]=S.tasks[group].filter(x=>x.id!==id);
+  delFromServer('task',group,id);
+  renderTasks(group);updateBadges();toast('Taak verwijderd');
+}
+function filterT(group,f,btn){
+  taskFilters[group]=f;
+  btn.closest('.tabs').querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  renderTasks(group);
+}
+function renderTasks(group){
+  const ids={moskee:'tl-moskee',mawada:'tl-mawada',dawah:'tl-dawah'};
+  const el=document.getElementById(ids[group]);if(!el)return;
+  const isMw=group==='mawada';
+  let tasks=S.tasks[group]||[];
+  const f=taskFilters[group]||'alle';
+  if(f==='Fouaad')tasks=tasks.filter(t=>t.person==='Fouaad'||t.person==='Beiden');
+  if(f==='Nahari')tasks=tasks.filter(t=>t.person==='Nahari'||t.person==='Beiden');
+  if(f==='open')tasks=tasks.filter(t=>!t.done);
+  if(f==='done')tasks=tasks.filter(t=>t.done);
+  const sorted = f==='done' ? tasks : sortByPriority(tasks);
+  el.innerHTML=sorted.length?sorted.map(t=>taskItemHTML(t,group)).join(''):'<div class="empty"><div class="empty-icon">✅</div>Geen taken. Voeg er een toe of stuur via Telegram!</div>';
+}
+
+// ── GOALS ──
+function addGoal(group){
+  const ids={moskee:['g-name','g-desc'],mawada:['mg-name','mg-desc']}[group];
+  const name=v(ids[0]);if(!name){toast('Vul een doel in');return;}
+  S.goals[group].unshift({id:++idC,name,desc:v(ids[1])||'',pct:0});
+  c(ids[0],'');c(ids[1],'');renderGoals(group);toast('Doel toegevoegd');
+}
+function updateGoalPct(group,id,val){
+  const g=S.goals[group]?.find(x=>x.id===id);if(g){g.pct=+val;renderGoals(group);}
+}
+function deleteGoal(group,id){
+  S.goals[group]=S.goals[group].filter(x=>x.id!==id);
+  delFromServer('goal',group,id);renderGoals(group);toast('Doel verwijderd');
+}
+function renderGoals(group){
+  const ids={moskee:'gl-moskee',mawada:'gl-mawada'};
+  const el=document.getElementById(ids[group]);if(!el)return;
+  const isMw=group==='mawada';
+  el.innerHTML=(S.goals[group]||[]).map(g=>`
+    <div class="goal-item">
+      <div class="goal-top"><div class="goal-name">${g.name}</div><div class="goal-pct${isMw?' mw':''}">${g.pct}%</div></div>
+      <div class="goal-bar"><div class="goal-fill${isMw?' mw':''}" style="width:${g.pct}%"></div></div>
+      <div class="goal-bottom">
+        <div class="goal-desc">${g.desc||''}</div>
+        <div class="goal-actions">
+          <input type="range" class="goal-slider${isMw?' mw':''}" min="0" max="100" value="${g.pct}" oninput="updateGoalPct('${group}',${g.id},this.value)">
+          <button style="background:none;border:none;font-size:11px;cursor:pointer;color:var(--text-muted)" onclick="deleteGoal('${group}',${g.id})">✕</button>
+        </div>
+      </div>
+    </div>`).join('')||'<div class="empty"><div class="empty-icon">🎯</div>Nog geen doelen. Voeg er een toe!</div>';
+}
+
+// ── PROJECTS ──
+function addProject(group){
+  const ids={moskee:['p-name','p-status','p-deadline','p-person'],mawada:['mp-name','mp-status','mp-deadline','mp-person']}[group];
+  const name=v(ids[0]);if(!name){toast('Vul een projectnaam in');return;}
+  S.projects[group].push({id:++idC,name,status:v(ids[1])||'plan',pct:0,deadline:v(ids[2])||'',person:v(ids[3])||'Beiden'});
+  c(ids[0],'');c(ids[2],'');renderProjects(group);toast('Project toegevoegd');
+}
+function updateProjPct(group,id,val){
+  const p=S.projects[group]?.find(x=>x.id===id);if(p){p.pct=+val;renderProjects(group);}
+}
+function deleteProject(group,id){
+  S.projects[group]=S.projects[group].filter(x=>x.id!==id);
+  delFromServer('project',group,id);renderProjects(group);toast('Project verwijderd');
+}
+function renderProjects(group){
+  const ids={moskee:'pl-moskee',mawada:'pl-mawada'};
+  const el=document.getElementById(ids[group]);if(!el)return;
+  const isMw=group==='mawada';
+  el.innerHTML=(S.projects[group]||[]).map(p=>`
+    <div class="proj-item">
+      <div class="proj-top"><div class="proj-name">${p.name}</div><div class="proj-tag pt-${p.status}">${stLabel(p.status)}</div></div>
+      <div class="proj-bar"><div class="proj-fill${isMw?' mw':''}" style="width:${p.pct}%"></div></div>
+      <div class="proj-bottom">
+        <span>${p.pct}% · ${p.person||''}</span>
+        <div class="proj-actions">
+          ${p.deadline?`<span>${p.deadline}</span>`:''}
+          <input type="range" min="0" max="100" value="${p.pct}" style="width:60px;accent-color:var(${isMw?'--mawada':'--teal'})" oninput="updateProjPct('${group}',${p.id},this.value)">
+          <button style="background:none;border:none;font-size:11px;cursor:pointer;color:var(--text-muted)" onclick="deleteProject('${group}',${p.id})">✕</button>
+        </div>
+      </div>
+    </div>`).join('')||'<div class="empty"><div class="empty-icon">📁</div>Nog geen projecten.</div>';
+}
+
+// ── IDEAS ──
+function addIdea(){
+  const name=v('i-name');if(!name){toast('Vul een idee in');return;}
+  S.ideas.unshift({id:++idC,name,desc:v('i-desc')||'',person:activeUser,date:new Date().toISOString().split('T')[0],section:'moskee'});
+  c('i-name','');c('i-desc','');renderIdeas();toast('Idee toegevoegd');
+}
+function renderIdeas(){
+  const el=document.getElementById('idea-list');if(!el)return;
+  el.innerHTML=(S.ideas||[]).map(i=>`
+    <div class="idea-item">
+      <div class="idea-name">💡 ${i.name}</div>
+      ${i.desc?`<div class="idea-desc">${i.desc}</div>`:''}
+      <div class="idea-meta">${i.date||''} ${i.person?' · '+i.person:''} ${i.section?' · '+i.section:''}</div>
+    </div>`).join('')||'<div class="empty"><div class="empty-icon">💡</div>Nog geen ideeën. Stuur een idee via Telegram!</div>';
+}
+
+// ── AGENT ──
+async function sendAgent(){
+  const inp=document.getElementById('agent-inp');
+  const msg=inp.value.trim();if(!msg)return;
+  const btn=document.getElementById('agent-send');
+  inp.value='';btn.disabled=true;
+  addMsg(msg,'user');
+  const tid='t'+Date.now();addMsg('','thinking',tid);
+  try{
+    const r=await fetch(BOT+'/agent',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:msg,user:activeUser,history:agentHist})});
+    const d=await r.json();
+    document.getElementById(tid)?.remove();
+    const reply=d.ok?d.reply:'Er ging iets mis. Probeer opnieuw.';
+    agentHist.push({role:'user',content:`${activeUser}: ${msg}`});
+    agentHist.push({role:'assistant',content:reply});
+    if(agentHist.length>20)agentHist=agentHist.slice(-20);
+    addMsg(reply,'bot');
+  }catch(e){
+    document.getElementById(tid)?.remove();
+    addMsg('Geen verbinding met de server.','bot');
+  }
+  btn.disabled=false;inp.focus();
+}
+
+function askAgent(q){document.getElementById('agent-inp').value=q;sendAgent();}
+function agentKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendAgent();}}
+
+function addMsg(text,type,id){
+  const msgs=document.getElementById('agent-msgs');
+  const row=document.createElement('div');
+  row.className='msg-row'+(type==='user'?' user':'');
+  if(id)row.id=id;
+  const now=new Date().toLocaleTimeString('nl-NL',{hour:'2-digit',minute:'2-digit'});
+  if(type==='user'){
+    const init=activeUser.substring(0,1);
+    row.innerHTML=`<div><div class="msg-bubble user">${text}</div><div class="msg-time">${now}</div></div><div class="msg-av user">${init}</div>`;
+  }else if(type==='thinking'){
+    row.innerHTML=`<div class="msg-av bot">🕌</div><div><div class="msg-bubble thinking"><span class="dots"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span></div></div>`;
+  }else{
+    row.innerHTML=`<div class="msg-av bot">🕌</div><div><div class="msg-bubble bot">${text.replace(/\n/g,'<br>')}</div><div class="msg-time">${now}</div></div>`;
+  }
+  msgs.appendChild(row);
+  msgs.scrollTop=msgs.scrollHeight;
+}
+
+// ── HELPERS ──
+function v(id){const el=document.getElementById(id);return el?el.value.trim():'';}
+function c(id,val){const el=document.getElementById(id);if(el)el.value=val;}
+function tLabel(t){return{weekly:'Wekelijks',intern:'Intern',public:'Publiek',mawada:'Mawada'}[t]||t;}
+function pLabel(p){return{high:'Hoog',mid:'Midden',low:'Laag'}[p]||p;}
+function stLabel(s){return{active:'Actief',plan:'Planning',review:'Review'}[s]||s;}
+
+let toastTimer;
+function toast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>t.classList.remove('show'),2200);
+}
+
+
+// ── DEADLINE HELPERS ──
+function deadlineStatus(dateStr){
+  if(!dateStr)return null;
+  const today=new Date();today.setHours(0,0,0,0);
+  const d=new Date(dateStr);d.setHours(0,0,0,0);
+  const diff=Math.round((d-today)/(1000*60*60*24));
+  if(diff<0)return{cls:'overdue',label:'Verlopen',wcls:'dw-over'};
+  if(diff<=3)return{cls:'due-soon',label:`${diff===0?'Vandaag':diff===1?'Morgen':diff+' dagen'}`,wcls:'dw-soon'};
+  return null;
+}
+
+// ── PRIORITY SORT ──
+function sortByPriority(tasks){
+  const order={high:0,mid:1,low:2};
+  return [...tasks].sort((a,b)=>{
+    // First: overdue tasks
+    const aOver=a.date&&new Date(a.date)<new Date();
+    const bOver=b.date&&new Date(b.date)<new Date();
+    if(aOver&&!bOver)return -1;
+    if(!aOver&&bOver)return 1;
+    // Then: by priority
+    const pd=(order[a.prio]||1)-(order[b.prio]||1);
+    if(pd!==0)return pd;
+    // Then: by date
+    if(a.date&&b.date)return a.date.localeCompare(b.date);
+    if(a.date)return -1;
+    if(b.date)return 1;
+    return 0;
+  });
+}
+
+// ── WEEK OVERVIEW ──
+function renderWeek(){
+  const now=new Date();
+  const monday=new Date(now);
+  monday.setDate(now.getDate()-now.getDay()+1);
+  monday.setHours(0,0,0,0);
+  const sunday=new Date(monday);
+  sunday.setDate(monday.getDate()+6);
+  sunday.setHours(23,59,59,999);
+
+  const fmt=d=>d.toLocaleDateString('nl-NL',{day:'numeric',month:'long'});
+  const wr=document.getElementById('week-range');
+  if(wr)wr.textContent=fmt(monday)+' — '+fmt(sunday);
+
+  const today=new Date();today.setHours(0,0,0,0);
+
+  // All tasks
+  const allTasks=[
+    ...S.tasks.moskee.map(t=>({...t,_group:'moskee'})),
+    ...S.tasks.dawah.map(t=>({...t,_group:'dawah'})),
+    ...S.tasks.mawada.map(t=>({...t,_group:'mawada'}))
+  ];
+
+  // Overdue
+  const overdue=allTasks.filter(t=>!t.done&&t.date&&new Date(t.date)<today);
+  // This week
+  const thisWeek=allTasks.filter(t=>{
+    if(t.done||!t.date)return false;
+    const td=new Date(t.date);td.setHours(0,0,0,0);
+    return td>=monday&&td<=sunday;
+  });
+  // No date but open
+  const noDate=allTasks.filter(t=>!t.done&&!t.date);
+
+  // Stats
+  const urgEl=document.getElementById('week-urgent');
+  if(urgEl){
+    urgEl.innerHTML=`<div class="week-stat-row">
+      <div class="week-stat"><div class="week-stat-num red">${overdue.length}</div><div class="week-stat-label">Verlopen taken</div></div>
+      <div class="week-stat"><div class="week-stat-num">${thisWeek.length}</div><div class="week-stat-label">Taken deze week</div></div>
+      <div class="week-stat"><div class="week-stat-num">${noDate.length}</div><div class="week-stat-label">Zonder deadline</div></div>
+    </div>`;
+  }
+
+  // Update badge
+  const total=overdue.length+thisWeek.length;
+  const bw=document.getElementById('b-week');
+  if(bw)bw.textContent=total;
+
+  // Overdue list
+  const odEl=document.getElementById('week-overdue');
+  if(odEl){
+    odEl.innerHTML=overdue.length?sortByPriority(overdue).map(t=>taskItemHTML(t,t._group)).join('')
+      :'<div class="empty"><div class="empty-icon">✅</div>Geen verlopen taken</div>';
+  }
+
+  // This week tasks
+  const wtEl=document.getElementById('week-tasks');
+  if(wtEl){
+    wtEl.innerHTML=thisWeek.length?sortByPriority(thisWeek).map(t=>taskItemHTML(t,t._group)).join('')
+      :'<div class="empty"><div class="empty-icon">📋</div>Geen taken met deadline deze week</div>';
+  }
+
+  // Events this week
+  const weEl=document.getElementById('week-events');
+  if(weEl){
+    const weekEvents=S.events.filter(e=>{
+      if(!e.date)return false;
+      const ed=new Date(e.date);ed.setHours(0,0,0,0);
+      return ed>=monday&&ed<=sunday;
+    }).sort((a,b)=>a.date.localeCompare(b.date));
+    weEl.innerHTML=weekEvents.length?weekEvents.map(e=>`
+      <div class="event-item" style="margin-bottom:7px">
+        <div class="event-date-box"><div class="event-day">${(e.date||'').split('-')[2]||'?'}</div><div class="event-month">${MONTHS[+(e.date||'').split('-')[1]]||''}</div></div>
+        <div class="event-info"><div class="event-name">${e.name}</div><div class="event-desc">${e.time||''}${e.desc?' · '+e.desc:''}</div></div>
+        <div class="event-tag et-${e.type}">${tLabel(e.type)}</div>
+      </div>`).join(''):'<div class="empty"><div class="empty-icon">📅</div>Geen evenementen deze week</div>';
+  }
+
+  // Mawada this week
+  const mwEl=document.getElementById('week-mawada');
+  if(mwEl){
+    const mwTasks=sortByPriority(S.tasks.mawada.filter(t=>!t.done));
+    mwEl.innerHTML=mwTasks.length?mwTasks.slice(0,5).map(t=>taskItemHTML(t,'mawada')).join('')
+      :'<div class="empty"><div class="empty-icon">✅</div>Geen open Mawada taken</div>';
+  }
+
+  // All open sorted
+  const allEl=document.getElementById('week-all');
+  if(allEl){
+    const allOpen=sortByPriority(allTasks.filter(t=>!t.done));
+    allEl.innerHTML=allOpen.length?allOpen.map(t=>taskItemHTML(t,t._group)).join('')
+      :'<div class="empty"><div class="empty-icon">✅</div>Alle taken zijn gedaan. Geweldig!</div>';
+  }
+}
+
+// ── TASK ITEM HTML WITH DEADLINE WARNING ──
+function taskItemHTML(t, group){
+  const isMw=group==='mawada';
+  const ds=deadlineStatus(t.date);
+  const extraClass=ds?ds.cls:'';
+  const warnLabel=ds?`<span class="deadline-warn ${ds.wcls}">${ds.label}</span>`:'';
+  return `<div class="task-item ${extraClass}${t.done?' done':''}">
+    <div class="task-check${isMw?' mw-check':''}${t.done?' done':''}" onclick="toggleTask('${group}',${t.id})">${t.done?'✓':''}</div>
+    <div class="task-body">
+      <div class="task-name">${t.name}</div>
+      <div class="task-meta">${t.date?`<span class="task-date">📅 ${t.date}</span>`:''}<span class="prio p-${t.prio}">${pLabel(t.prio)}</span>${t.person?`<span class="badge b-${t.person.toLowerCase()}">${t.person}</span>`:''} ${warnLabel}</div>
+    </div>
+    <button class="task-del" onclick="deleteTask('${group}',${t.id})">✕</button>
+  </div>`;
+}
+
+// ── SEARCH ──
+function doSearch(q){
+  const res=document.getElementById('search-results');
+  if(!S||q.length<2){res.classList.remove('show');return;}
+  q=q.toLowerCase();
+  const results=[];
+
+  // Search tasks
+  [...S.tasks.moskee,...S.tasks.dawah,...S.tasks.mawada].forEach(t=>{
+    if(t.name.toLowerCase().includes(q))
+      results.push({icon:'✅',name:t.name,meta:pLabel(t.prio)+' · '+(t.person||''),page:'taken'});
+  });
+
+  // Search events
+  S.events.forEach(e=>{
+    if(e.name.toLowerCase().includes(q))
+      results.push({icon:'📅',name:e.name,meta:e.date+' · '+tLabel(e.type),page:'planning'});
+  });
+
+  // Search projects
+  [...S.projects.moskee,...S.projects.mawada].forEach(p=>{
+    if(p.name.toLowerCase().includes(q))
+      results.push({icon:'📁',name:p.name,meta:stLabel(p.status),page:'projecten'});
+  });
+
+  // Search ideas
+  S.ideas.forEach(i=>{
+    if(i.name.toLowerCase().includes(q))
+      results.push({icon:'💡',name:i.name,meta:i.desc||'',page:'ideeen'});
+  });
+
+  if(!results.length){
+    res.innerHTML='<div class="search-empty">Niets gevonden voor "'+q+'"</div>';
+  } else {
+    res.innerHTML=results.slice(0,8).map(r=>`
+      <div class="search-item" onclick="goSearch('${r.page}')">
+        <div class="search-icon">${r.icon}</div>
+        <div><div class="search-name">${r.name}</div><div class="search-meta">${r.meta}</div></div>
+      </div>`).join('');
+  }
+  res.classList.add('show');
+}
+
+function goSearch(page){
+  document.getElementById('search-inp').value='';
+  closeSearch();
+  nav(page, document.querySelector(`[onclick*="${page}"]`));
+}
+
+function closeSearch(){
+  document.getElementById('search-results')?.classList.remove('show');
+}
+
+// ── TELEGRAM NOTIFICATIE BIJ TAAKTOEWIJZING ──
+async function notifyAssignee(taskName, person, group){
+  // Stuur bericht via bot naar de toegewezen persoon
+  try{
+    await fetch('https://alnaharibot-production.up.railway.app/notify',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({task:taskName,person,group})
+    });
+  }catch(e){/* stil falen */}
+}
+
+// ── INIT ──
+S=defaultS();
+syncData();
+setInterval(syncData,30000);
+
+const h=new Date().getHours();
+const g=h<5?'Goede nacht':h<12?'Goedemorgen':h<18?'Goedemiddag':'Goedenavond';
+const ic=h<5?'🌙':h<12?'🌤':h<18?'🌿':'🌙';
+document.getElementById('greeting').textContent=g+', Fouaad '+ic;
+document.getElementById('dash-date').textContent=new Date().toLocaleDateString('nl-NL',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+
+// Mobile: start collapsed
+if(window.innerWidth<=768){
+  document.getElementById('main-nav').classList.add('collapsed');
+}
+</script>
+</body>
+</html>
